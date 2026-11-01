@@ -1,0 +1,23 @@
+{
+  "brand": {
+    "name": "",
+    "tagline": "",
+    "industry": "",
+    "logo": "",
+    "primary": "#14b8a6",
+    "secondary": "#22d3ee"
+  },
+  "items": [
+    { "label": "Kit installed — your vault is live on this machine", "status": "green" },
+    { "label": "Profile and brand applied by the unified installer", "status": "green" },
+    { "label": "AI connection recorded locally", "status": "green" },
+    { "label": "First weekly review not yet run", "status": "red" }
+  ],
+  "quick_actions": [],
+  "meta": {
+    "adrs_open": 3,
+    "sops": 5,
+    "last_decision": "install",
+    "version": "1.9.0"
+  }
+}

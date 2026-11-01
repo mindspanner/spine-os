@@ -1,0 +1,6 @@
+# SPINE-OS safety settings for Codex (v1.9). Codex asks you before any command that is not a plain
+# read ("untrusted"), and can only write inside this folder ("workspace-write"). Together with the house
+# rules in AGENTS.md this is a safety net plus rules, not a guarantee: read each command Codex shows you,
+# and decline anything that deletes (rm, del, Remove-Item) unless you typed "permanently delete" + its name.
+approval_policy = "untrusted"
+sandbox_mode = "workspace-write"

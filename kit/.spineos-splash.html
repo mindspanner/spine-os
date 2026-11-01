@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en-AU"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spine-OS · Welcome</title>
+<!-- Premium logo splash for the guided installer. Plays the on-brand Spine-OS logo video
+     (bundled locally, no network). Poster + reduced-motion fallback show a static frame if
+     autoplay is blocked. The Install Spine-OS.app opens this, then drives the guided steps
+     via native dialogs. Honest caption: setup happens in the installer window. -->
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:#04080c;overflow:hidden;font-family:-apple-system,system-ui,"Segoe UI",sans-serif}
+  video,.poster{position:fixed;inset:0;width:100%;height:100%;object-fit:cover}
+  .poster{background:#04080c center/cover no-repeat;display:none}
+  .cap{position:fixed;left:0;right:0;bottom:7%;text-align:center;color:#c3d2e8;font-size:15px;opacity:0;
+    animation:fade .8s ease 3s forwards;text-shadow:0 2px 14px rgba(0,0,0,.65)}
+  .cap b{color:#5eead4;font-weight:700}
+  @keyframes fade{to{opacity:1}}
+  @media(prefers-reduced-motion:reduce){ video{display:none} .poster{display:block} .cap{animation:none;opacity:1} }
+</style></head>
+<body>
+  <video autoplay muted playsinline poster=".spineos-splash.jpg"><source src=".spineos-splash.mp4" type="video/mp4"></video>
+  <div class="poster" style="background-image:url('.spineos-splash.jpg')"></div>
+  <div class="cap">Setup is in the <b>installer window</b> — you can close this tab.</div>
+</body></html>

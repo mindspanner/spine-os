@@ -1,0 +1,725 @@
+{
+  "name": "spine-os",
+  "version": "1.9.0",
+  "tag": "v1.9.0",
+  "install": {
+    "url": "https://raw.githubusercontent.com/mindspanner/spine-os/v1.9.0/INSTALL-FOR-AI.md",
+    "sha256": "8a70961392935abc02b93a785ed1974b6326bf096b6dc4c4699f4706642a0aaa"
+  },
+  "changelog": [
+    {
+      "version": "1.9.0",
+      "title": "1.9.0 — 2 Nov 2026 · nothing is deleted for good",
+      "notes": [
+        "One new question at install",
+        "The three-step rule for a permanent delete",
+        "A delete guard, on by default",
+        "`vault/90-ARCHIVE/`",
+        "One-line install for any desktop AI",
+        "\"Check for updates\"",
+        "Codex safety settings",
+        "Delete guard hardened"
+      ]
+    },
+    {
+      "version": "1.8.0",
+      "title": "1.8.0 — 2 Nov 2026 · keep current, optional extras, Windows",
+      "notes": [
+        "Optional extras, asked in plain English",
+        "AI shortcuts (skills)",
+        "Windows installer",
+        "Security baseline",
+        "Social work persona",
+        "One-paste setup",
+        "Checks"
+      ]
+    },
+    {
+      "version": "1.7.0",
+      "title": "1.7.0",
+      "notes": []
+    }
+  ],
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "c7941b93cce2f68445260be5a0566c4b29eb785f3be76d0c93c16d62f66b5200",
+      "bytes": 255
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "dac622b77585d71a220705008237903122d57f71bb2f288edf51197ae46d4813",
+      "bytes": 340
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "5b2df26bc988e586746595751d809f180a083553dbfe2c8e5a4624672d8df4fe",
+      "bytes": 5175
+    },
+    {
+      "path": "GAPS.md",
+      "sha256": "b638ef96aef561bf450bda5aa7e7a333aef30495167b40e716b2a828070b3cce",
+      "bytes": 6474
+    },
+    {
+      "path": "INSTALL-FOR-AI.md",
+      "sha256": "8a70961392935abc02b93a785ed1974b6326bf096b6dc4c4699f4706642a0aaa",
+      "bytes": 22127
+    },
+    {
+      "path": "INSTALL-WITH-YOUR-AI.md",
+      "sha256": "279ac7b0f7f3660fb823693555e16e59b171481efdbd3f56f6ec0457cb930745",
+      "bytes": 7516
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "e10ff4fbd0a689a980eb53b88cf13699cd10c96bd9529e86a3b1df0dd3156ba3",
+      "bytes": 12893
+    },
+    {
+      "path": "MANIFEST.json",
+      "sha256": "6b9af7d948add2b6d359327bb3ca4a42f474451ce31d4bf95a5d1e9e37cbc8e6",
+      "bytes": 6946
+    },
+    {
+      "path": "PASTE-SETUP.md",
+      "sha256": "5ce823426f63b6d186283a3e5ad07a31490d64b3b4c95a2d1e8daa063bb62c7c",
+      "bytes": 770
+    },
+    {
+      "path": "README.md",
+      "sha256": "ef33398672c01f8bdf3615c6ddb71e1be84108d317402e56a9ce6dd2c4219490",
+      "bytes": 4749
+    },
+    {
+      "path": "SECURITY.md",
+      "sha256": "089acea3ce44b29fa63d21f711c151419e4e807c70287f90b85865f8d9d707de",
+      "bytes": 1897
+    },
+    {
+      "path": "kit/.claude/hooks/delete-guard.mjs",
+      "sha256": "ae1d8bb177ae67d697e4b0e6fefc1c66e80dc8b3291b2aa801cf36b828ae2f73",
+      "bytes": 52972
+    },
+    {
+      "path": "kit/.claude/hooks/delete-guard.sh",
+      "sha256": "ec3968853ee586f141fbbf6e80aefbbe98291fa2e6de35d1db2112e9eef20ef5",
+      "bytes": 1458
+    },
+    {
+      "path": "kit/.claude/settings.json",
+      "sha256": "0e8cbda769aaa3366296268cb42d49212565c0c381547b836711bb6e8007a48d",
+      "bytes": 679
+    },
+    {
+      "path": "kit/.codex/config.toml",
+      "sha256": "70b3773181f908d0b3cb6e5668cc05706c4977f3e27b0a39798ceb563e544fc0",
+      "bytes": 482
+    },
+    {
+      "path": "kit/.spineos-splash.html",
+      "sha256": "816e15f37e696d84ac5a3003b204ca19c53a86adf93c713907df26b4b2a4e76c",
+      "bytes": 1555
+    },
+    {
+      "path": "kit/.spineos-splash.jpg",
+      "sha256": "bc06ea9ab41c77784e7807f98f8e0ac0de81200568daccc56a7469bd7c586316",
+      "bytes": 23026
+    },
+    {
+      "path": "kit/.spineosignore",
+      "sha256": "796120ca87c7a1e8f58aeda8c9c48c267d0347ca5e4fe88180a5b0ed4504eb92",
+      "bytes": 401
+    },
+    {
+      "path": "kit/AGENTS.md",
+      "sha256": "a29a2ab2656864614e41d1976abc35cc61259b2f4d440eb20c8b095d41724bb2",
+      "bytes": 771
+    },
+    {
+      "path": "kit/CLAUDE.md",
+      "sha256": "fe111c32de4d807187eb6440f386a8a0ad36c976bf85e87ee8c829492630a036",
+      "bytes": 9585
+    },
+    {
+      "path": "kit/GOVERNANCE-STARTER.md",
+      "sha256": "480f7c3157368d9091ccf211ed9022b196f39714e4bb4b27bc8a33fe7e33fc28",
+      "bytes": 1266
+    },
+    {
+      "path": "kit/Install-Guide.pdf",
+      "sha256": "5c4f87691aa5f074d53ac9bad3f0e3c624a7c944f1135b16343e4683db747538",
+      "bytes": 2050249
+    },
+    {
+      "path": "kit/Install-on-Windows.cmd",
+      "sha256": "4b248ccfeeecda2f6b30c33737694744c6b6618b7dfff8d2bde8d33a92730ec6",
+      "bytes": 296
+    },
+    {
+      "path": "kit/LICENSE.txt",
+      "sha256": "e10ff4fbd0a689a980eb53b88cf13699cd10c96bd9529e86a3b1df0dd3156ba3",
+      "bytes": 12893
+    },
+    {
+      "path": "kit/MEMORY.md",
+      "sha256": "7d20403dcbac55e555d139cd244326daf1fdef1c272b12859018034728deb2c0",
+      "bytes": 1272
+    },
+    {
+      "path": "kit/SETUP-GUIDE.md",
+      "sha256": "4b096a2ced7fb6eeeb06b9851ef3a3970aef3c72bebc25732f319ef22a67a9f4",
+      "bytes": 3610
+    },
+    {
+      "path": "kit/START-HERE.html",
+      "sha256": "575b835c611820e8dd0cceba9a23cc850ca12c7e8ee5d748c3e276364f2c9f1a",
+      "bytes": 14152
+    },
+    {
+      "path": "kit/START-WITH-YOUR-AI.md",
+      "sha256": "1bb136bd3473dbea9afbe416a5022440f569e6cdf6495c2118cd23306a12bb47",
+      "bytes": 6858
+    },
+    {
+      "path": "kit/VERIFY-DOWNLOAD.md",
+      "sha256": "fdb412b33514d016b6f841b0e713799bce6cedf246c02db9c29ea2fa90ab59e0",
+      "bytes": 1890
+    },
+    {
+      "path": "kit/VERSION",
+      "sha256": "30f4611383aa30a15753789f40effde81332f2f8714e6d3b2940bf0fc4592377",
+      "bytes": 6
+    },
+    {
+      "path": "kit/WIKI-ROOT-GOVERNANCE.md",
+      "sha256": "d48e446f158f97c26cb0655b60a3f112e17b4c33629af0acfacdd878b6d14aa1",
+      "bytes": 2239
+    },
+    {
+      "path": "kit/_config/brand.example",
+      "sha256": "50a2407031a6ba599e22c2ff11764b7450f58668cc5cde610fc7b34c04a66c87",
+      "bytes": 414
+    },
+    {
+      "path": "kit/_config/llm.local.js",
+      "sha256": "290f24ca40b5f462e391546b3c9522b3d70e229b13493b79022ec5a1f8883416",
+      "bytes": 175
+    },
+    {
+      "path": "kit/dashboard.html",
+      "sha256": "45fbe63ba38f2480a9e6b1598e12e6398c04f2992f508625b603a83fb4013ef8",
+      "bytes": 11359
+    },
+    {
+      "path": "kit/install.command",
+      "sha256": "13d67246cc7e1a76ea33d7b557d7f1c13af391b9240c6759934f310bcedebd2e",
+      "bytes": 469
+    },
+    {
+      "path": "kit/install.ps1",
+      "sha256": "40a155f14a560c61dac880792c1e0be39e0766f9f130dc0effb86c63f792b2bd",
+      "bytes": 14410
+    },
+    {
+      "path": "kit/install.sh",
+      "sha256": "3233037c31b2313ddcc3111e59523f89737a6791653d14350d43024157068b95",
+      "bytes": 19512
+    },
+    {
+      "path": "kit/intake.html",
+      "sha256": "6ac1eb78c83bbeb8cbdb10599d5ae166cf0b1b671d853cab739e5829c4d8cbcf",
+      "bytes": 25857
+    },
+    {
+      "path": "kit/legal/README.md",
+      "sha256": "bde4725b22a8b286ca7705ad7f0f336252d07ae8808bd6502744637247eebdd6",
+      "bytes": 3002
+    },
+    {
+      "path": "kit/legal/consent-record-schema-v1.json",
+      "sha256": "e64430c86379d60dcbca0c41f8f212cd2fe4b5a1f228d2b3cc524af5d0f08fec",
+      "bytes": 2629
+    },
+    {
+      "path": "kit/legal/spineos-EULA-v1.1.md",
+      "sha256": "6d9b0082df357a8a0e11a2488908008d15d9e644371bd55e131668215fa4e918",
+      "bytes": 12628
+    },
+    {
+      "path": "kit/legal/spineos-EULA-v1.2.md",
+      "sha256": "e10ff4fbd0a689a980eb53b88cf13699cd10c96bd9529e86a3b1df0dd3156ba3",
+      "bytes": 12893
+    },
+    {
+      "path": "kit/legal/spineos-disclaimer-liability-v1.1.md",
+      "sha256": "9be1bba463be5d23028ed198c7a35e6c4f3f6e1442fd6afbd4527262e91e58cb",
+      "bytes": 6651
+    },
+    {
+      "path": "kit/legal/spineos-disclaimer-liability-v1.2.md",
+      "sha256": "f7f428e84b2b438a6e9f50162d232249ac1939af4886d41ef4a9d7efc1530694",
+      "bytes": 6914
+    },
+    {
+      "path": "kit/legal/spineos-privacy-data-handling-v0.1-DRAFT.md",
+      "sha256": "de91776a1c37f87deda98124f93a83c2f19bd816daa2f9b8b5772aae7611f86e",
+      "bytes": 1925
+    },
+    {
+      "path": "kit/modules/casework/files/vault/20-GOVERNANCE/SOP-case-files.md",
+      "sha256": "65fecd71d0435c840d52363a38a7a9b7a683d8461d1de6ef105bfbf16db0ece3",
+      "bytes": 1242
+    },
+    {
+      "path": "kit/modules/casework/files/vault/30-CLIENTS/_CASE-TEMPLATE/00-SUMMARY.md",
+      "sha256": "334873d0ca3d5d2263c4d2a3495d31d4fae3484abadf697ccb9e016b74928925",
+      "bytes": 749
+    },
+    {
+      "path": "kit/modules/casework/files/vault/30-CLIENTS/_CASE-TEMPLATE/contacts.md",
+      "sha256": "50d835d67ae4839cc2ffe7e1b23e7ce450f543c041b01a4b80681b9a9aa590c1",
+      "bytes": 169
+    },
+    {
+      "path": "kit/modules/casework/files/vault/30-CLIENTS/_CASE-TEMPLATE/documents/.keep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "kit/modules/casework/files/vault/30-CLIENTS/_CASE-TEMPLATE/notes/_NOTE-TEMPLATE.md",
+      "sha256": "77fa829e72d4fe3e3200cf88710103f7de2192c4b84f10fd9401ab69b64b7946",
+      "bytes": 526
+    },
+    {
+      "path": "kit/modules/casework/files/vault/30-CLIENTS/_CASE-TEMPLATE/plans/_PLAN-TEMPLATE.md",
+      "sha256": "16c0ff7b8e4fd0de92cd01127bac532eaf63818489aa7857a19bf82dd9f51915",
+      "bytes": 353
+    },
+    {
+      "path": "kit/modules/casework/files/vault/30-CLIENTS/_CODE-KEY.md",
+      "sha256": "a82a368b8297caabb8811f5fbd7d4dbe1112d947f7c22078670c6f7f445d381a",
+      "bytes": 270
+    },
+    {
+      "path": "kit/modules/documents/files/vault/40-DOCUMENTS/README.md",
+      "sha256": "e1f84d0b2fd550e084c9b3286d0f0c21f9b3d2933d93027b57e9674b3aacc8f2",
+      "bytes": 960
+    },
+    {
+      "path": "kit/modules/documents/files/vault/40-DOCUMENTS/admin/.keep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "kit/modules/documents/files/vault/40-DOCUMENTS/forms/.keep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "kit/modules/documents/files/vault/40-DOCUMENTS/reference/.keep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "kit/modules/documents/files/vault/40-DOCUMENTS/templates/.keep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "kit/modules/email/files/vault/systems/Email-Help.md",
+      "sha256": "b52827f329e308ed684a8316d137ebcd0ce7fd99bbc881d07a6d62b5bf35c924",
+      "bytes": 794
+    },
+    {
+      "path": "kit/modules/email/files/vault/systems/email-templates/appointment-confirmation.md",
+      "sha256": "97dfcf093be471f10dc26903c7cf8392e66992a780e6b10e5e0f545c1982ee25",
+      "bytes": 279
+    },
+    {
+      "path": "kit/modules/email/files/vault/systems/email-templates/follow-up.md",
+      "sha256": "4dd11549927b3be9b64df5d1ea51080720012cb6c6499f6425f6c5f40ef054c5",
+      "bytes": 267
+    },
+    {
+      "path": "kit/modules/email/files/vault/systems/email-templates/report-ready.md",
+      "sha256": "11390b934f112aeb58fc21c5df0ddc7bd9b1b296d0e8aaa34f6e087e808b9dc7",
+      "bytes": 244
+    },
+    {
+      "path": "kit/modules/email/files/vault/systems/email-templates/reschedule.md",
+      "sha256": "c7dbc904e5ce2434b46b174d57ca981af9b8a58065fefdeee236562bc3c98e67",
+      "bytes": 236
+    },
+    {
+      "path": "kit/modules/reminders/files/vault/REMINDERS.md",
+      "sha256": "48fbb33f33764ee78ae00e6f7f985b99f2f2a4e96eadb2657a8d39f57e91d350",
+      "bytes": 553
+    },
+    {
+      "path": "kit/modules/reminders/files/vault/systems/Reminders.md",
+      "sha256": "afdadf3b29a2562a59f0a6f591961df6b4ce6b005cea8fbdb6328778ad1a4213",
+      "bytes": 589
+    },
+    {
+      "path": "kit/modules/skills/files/.claude/skills/README.md",
+      "sha256": "911f53627c68fbbe22d886dee7a5ad37a353fd627c8d671d581bdee24b06eb22",
+      "bytes": 760
+    },
+    {
+      "path": "kit/modules/skills/files/.claude/skills/case-note/SKILL.md",
+      "sha256": "1629dcae5a279f54d4f0635d779dc19a30ddc490f951deeb179bdb41d27af44b",
+      "bytes": 859
+    },
+    {
+      "path": "kit/modules/skills/files/.claude/skills/draft-email/SKILL.md",
+      "sha256": "db26b32a392ab0de8214ca47aafd16aeba5a40b430db66b254924690b0e815dc",
+      "bytes": 619
+    },
+    {
+      "path": "kit/modules/skills/files/.claude/skills/find-it/SKILL.md",
+      "sha256": "ac54be7e6cdb18c0a741e14aac1dbfe25be8dbb31d57d3118218bccc83f318f7",
+      "bytes": 715
+    },
+    {
+      "path": "kit/modules/skills/files/.claude/skills/keep-current/SKILL.md",
+      "sha256": "94f4f46bd418f1d0ac8d613b3632b2501e8255aa8b0015ec56672bbb8a0edcc3",
+      "bytes": 819
+    },
+    {
+      "path": "kit/modules/skills/files/.claude/skills/privacy-check/SKILL.md",
+      "sha256": "47af256bb4c33a1f8c8297280dc0283f3f4e48b6907bbbb6d1ce00d8d838edc8",
+      "bytes": 791
+    },
+    {
+      "path": "kit/modules/skills/files/.claude/skills/sort-inbox/SKILL.md",
+      "sha256": "634c3e6ea6230e60069ad47775fc0d18009dcc250faccfc15cd31dfd56caefc5",
+      "bytes": 987
+    },
+    {
+      "path": "kit/modules/skills/files/.claude/skills/weekly-review/SKILL.md",
+      "sha256": "3e849923543b43cdeb1a6966d2ab72b686d06fe8a485e50faa1a9e9f8e0a373d",
+      "bytes": 638
+    },
+    {
+      "path": "kit/modules/skills/files/.claude/skills/whats-due/SKILL.md",
+      "sha256": "c4a5815abc8919badf6d6f2a32a570086e193e57c4f3b4d02c56f0ede2e3663a",
+      "bytes": 784
+    },
+    {
+      "path": "kit/refresh-status-board.mjs",
+      "sha256": "9d09ab620f3122f54998ed184d8bc88e8428a0dda48a0e01d7a34957caa4cae8",
+      "bytes": 813
+    },
+    {
+      "path": "kit/status-board.js",
+      "sha256": "f5638bfa7fe36c7272f98d04e09c78ca80f8486551da9c05ce59793fec40948e",
+      "bytes": 704
+    },
+    {
+      "path": "kit/status-board.json",
+      "sha256": "2587aee5ef19fb4ef572f43ee5b3c7e01e18e332c3eff31bcc4da38491504d5d",
+      "bytes": 613
+    },
+    {
+      "path": "kit/vault/00-INBOX/.keep",
+      "sha256": "ea62f67c78115882b79770ede436ffb8375817b86b18dd22d24a49b6e0e590a7",
+      "bytes": 100
+    },
+    {
+      "path": "kit/vault/00-INBOX/EXAMPLE-captured-note.md",
+      "sha256": "decc9f71063e7e88bfe2326ef3c75e33f8c642d9445173b172c3d3abc69c4800",
+      "bytes": 494
+    },
+    {
+      "path": "kit/vault/10-PROJECTS/EXAMPLE-bakery-rebrand.md",
+      "sha256": "f7568f977190fa7102a4c3378042e3969959072432326e8f1e1bd4747992ef21",
+      "bytes": 1026
+    },
+    {
+      "path": "kit/vault/10-PROJECTS/EXAMPLE-cafe-loyalty-card.md",
+      "sha256": "dcae9f1b0d1b4b00c9f49359fa30dbf054220a96917c1511c3b08a58556cdb5e",
+      "bytes": 714
+    },
+    {
+      "path": "kit/vault/10-PROJECTS/_TEMPLATE.md",
+      "sha256": "ef9235e8928f7401b20d5b282b855203bf2d09719ea88c60dc9139eb81b21e34",
+      "bytes": 325
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/ADR-template.md",
+      "sha256": "f45f8a915e4963d39a083fca76094e4dab07b6fbbb131b290b252b5db497b3bc",
+      "bytes": 426
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/Australian-Privacy-starter-note.md",
+      "sha256": "44bc711c20df3ee991a4fb501bd84c4c59532a8d9b499bb8c66667cb865d2913",
+      "bytes": 5766
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/README.md",
+      "sha256": "ced5b739e24351ed2a182eace045d0d5d42ed1dbe2646dfea6ad3215f8b5d094",
+      "bytes": 2781
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/SECURITY-BASELINE.md",
+      "sha256": "c93e881bee7a04a85eb93a36e0471b9bba8e68a195b2358727b51c08e03214c7",
+      "bytes": 1922
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/SOP-client-intake.md",
+      "sha256": "9376a6eae1650ea4df7732d976f7f2b7be32ca76b9f64381b2e84f77f471c92a",
+      "bytes": 3402
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/SOP-data-backup-3-2-1.md",
+      "sha256": "dd98ec0381027565dc88e37a5089fe129005a3afd4765e7f8c9e8f009c223b29",
+      "bytes": 3201
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/SOP-document-generation.md",
+      "sha256": "83eb8cdb73190892e2c22989748f04563a8a15fceeec780079153c0728fe53a9",
+      "bytes": 2943
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/SOP-incident-record.md",
+      "sha256": "a00896be69f6fa803e36a9c0d690264ab7edbc5c49b5cfad82a4ad1a15d5a091",
+      "bytes": 3597
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/SOP-keeping-current.md",
+      "sha256": "386730e1ed1c6323b0357c5ac64b1546e6dd8f96348fd37f4ca356d7f8d5ec3a",
+      "bytes": 790
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/SOP-llm-assistant-use.md",
+      "sha256": "a5b50c2545d6dcfd705763633781fe461a1d415fa54c63ba910e7db46ae7169e",
+      "bytes": 3210
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/SOP-monthly-finance-close.md",
+      "sha256": "dfe6bc929f79c972ec98b1fb3cbafd1b4b5f492fa4877a1f09f5084fb9662142",
+      "bytes": 3014
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/SOP-naming-and-filing.md",
+      "sha256": "7f13bff7f8926e652cdc04ab39c836f018a889d39d9606af4f78802d49d7a9b7",
+      "bytes": 1249
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/SOP-record-retention-AU.md",
+      "sha256": "cf66c17e33a6913d4b4845790e2e3a650afa32a9532a5df94e3c570766efa280",
+      "bytes": 4293
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/SOP-removing-files.md",
+      "sha256": "8d65d907183afc81d4c99c66a77b2ab29231dfbbf1feeea021cb33cf776e688a",
+      "bytes": 5017
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/SOP-template.md",
+      "sha256": "ca62ab6bc17cb14c3b4de009b66a2fda7738cef785f9a79645abb651112cf6d7",
+      "bytes": 340
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/SOP-weekly-review.md",
+      "sha256": "39162cecc36ad8f7eb13e1ab21807330657d70f00d14cb9e4c99a091448a6eed",
+      "bytes": 3042
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/decisions/ADR-0001-where-client-data-lives.md",
+      "sha256": "d7aa97419b070d193ba55578d5b4e3e59035d26fa3e7f1c11ab4daeb958bc8c8",
+      "bytes": 2135
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/decisions/ADR-0002-which-llm-and-on-what-data.md",
+      "sha256": "f96f248b109d9074056ebd3e17a7de0ee84339dac17fb6ab353ba0ded732542b",
+      "bytes": 2235
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/decisions/ADR-0003-pricing-and-payment-terms.md",
+      "sha256": "2853c90ba8bb3d68411b51809b871f787ccbdb67a62920bbb3815071f7bdb621",
+      "bytes": 2353
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/decisions/ADR-template.md",
+      "sha256": "5b484f19c27ebadffa3bc0d4f0b047a4655e1082e9c3ab17067e3a43c5b8e0c4",
+      "bytes": 1287
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/decisions/README.md",
+      "sha256": "c18abd428d4c95a8cad582780145c6727ea579f59fbf7cc1a53f272c0e44dadf",
+      "bytes": 1487
+    },
+    {
+      "path": "kit/vault/20-GOVERNANCE/decisions/decisions.jsonl",
+      "sha256": "4608fd2bbdeb583c423579300977f3a05142ab11a659067d4fa5aac04cae5aeb",
+      "bytes": 500
+    },
+    {
+      "path": "kit/vault/30-CLIENTS/EXAMPLE-Riverside-Cafe.md",
+      "sha256": "d4015a8cac66c475b4c0419d4bbdb0295984e8d526f122e7162c6f70b1e6926f",
+      "bytes": 1000
+    },
+    {
+      "path": "kit/vault/30-CLIENTS/_TEMPLATE.md",
+      "sha256": "0d003373a79bf1c5cebbceea09a92efaef9402fb0d0741b70ac00a5f1e44bdef",
+      "bytes": 443
+    },
+    {
+      "path": "kit/vault/90-ARCHIVE/README.md",
+      "sha256": "c047a013eaca8d77630c7da0f56b3c4db8212b054150d2f2841afe6307ba10d2",
+      "bytes": 1017
+    },
+    {
+      "path": "kit/vault/README.md",
+      "sha256": "9bafd6411355012011b3ab9903d05f8ae3dd72a0c56bdb493ae832f29a7b2677",
+      "bytes": 3403
+    },
+    {
+      "path": "kit/vault/systems/Client-Intake.md",
+      "sha256": "3a9019ae97fc3be47fc12a221d43063c91977a3366c5e54d5d86774a0fbb0a56",
+      "bytes": 3106
+    },
+    {
+      "path": "kit/vault/systems/Morning-Briefing.md",
+      "sha256": "1283f304af90d8d79bca6284e36062eecf20b3b8f6258e13338a3b7e712e66b4",
+      "bytes": 2641
+    },
+    {
+      "path": "kit/vault/systems/README.md",
+      "sha256": "a6a69b80600b9025adaa5571b72d7d46f8793fe4d1a1d4bdebb55ca25a8b2b3f",
+      "bytes": 1267
+    },
+    {
+      "path": "kit/vault/systems/Weekly-Review.md",
+      "sha256": "21a9b60a29c443d149a1ebb0a1714b5eadbee38b286a2013f68094753367678f",
+      "bytes": 2919
+    },
+    {
+      "path": "kit/wizard/README.md",
+      "sha256": "2c39b8e8a118a78b213890e4dc104d895c67c826d6ff5d70d8bf12cc0ba67942",
+      "bytes": 4659
+    },
+    {
+      "path": "kit/wizard/admin-config.example.spineos-admin",
+      "sha256": "b78cdf3afacec78118857444c0c90bb6752000ad849ebf48af2acbc62cc7ac80",
+      "bytes": 578
+    },
+    {
+      "path": "kit/wizard/admin-mode-test.mjs",
+      "sha256": "7f11f9006dca0bab5589916ba48e539f510daebb9585f954213f686852cc825b",
+      "bytes": 3221
+    },
+    {
+      "path": "kit/wizard/ai-connect-test.mjs",
+      "sha256": "6a4942bfbc23c8ce77b646a0bdc2b65019de0d05dc38eee3425875b4fd354b62",
+      "bytes": 2919
+    },
+    {
+      "path": "kit/wizard/delete-guard-test.mjs",
+      "sha256": "ff300e3cb74af0897cc95e960ea6503ecbcf1403f745547a237a94b8cd6d32ba",
+      "bytes": 18413
+    },
+    {
+      "path": "kit/wizard/governance-test.mjs",
+      "sha256": "490490a524664fa1f2dc03359ff283a0709dec5a1951b3e1e77896fdf63a3e7b",
+      "bytes": 2888
+    },
+    {
+      "path": "kit/wizard/installer-services.mjs",
+      "sha256": "089fb95920cbecd8c2b28f140b510577be8e6ad5d4d10be3f484a315e7e655c5",
+      "bytes": 10063
+    },
+    {
+      "path": "kit/wizard/kit-install-test.mjs",
+      "sha256": "03045b84ce665223377b76d48e8f7d8e141927d84a90069b144cbfc0b6648290",
+      "bytes": 2928
+    },
+    {
+      "path": "kit/wizard/modules-test.mjs",
+      "sha256": "e57a19939db40f38393cc24664322006a4c7e1fcbb4ad25d1dcdd6ee0f06d810",
+      "bytes": 7832
+    },
+    {
+      "path": "kit/wizard/pressure-test-v2.mjs",
+      "sha256": "40982ab519896459ff4d89a6b0801ec2533858171f8618cb22cbb97c72ca1a28",
+      "bytes": 17678
+    },
+    {
+      "path": "kit/wizard/pressure-test.mjs",
+      "sha256": "d1bbfcb96f8d8416c9f9cdb3a4f992c39f211a9b6bf40881a3478955e943bbfe",
+      "bytes": 3567
+    },
+    {
+      "path": "kit/wizard/provision.mjs",
+      "sha256": "5b8eaeec358faa0c6b18db75f8f535f960bcedb2e50fc81e3cf16e1791185e8c",
+      "bytes": 32953
+    },
+    {
+      "path": "kit/wizard/serve.mjs",
+      "sha256": "79eb2d6ae3e52cf9c7a06baa39341b42347ed6092adce00dfd30ccc83f9a5acf",
+      "bytes": 21079
+    },
+    {
+      "path": "kit/wizard/spine-os-icon.png",
+      "sha256": "c1abfc76f17df5990c730b82fe75677688e29f3520636c1e1d47a8a971397353",
+      "bytes": 538820
+    },
+    {
+      "path": "kit/wizard/splash-autoplay.webp",
+      "sha256": "23435832ba75b6bf883e3dd8b17f466ce68c90637ad8909ab079175d67c9b7e4",
+      "bytes": 2786938
+    },
+    {
+      "path": "kit/wizard/splash-poster.jpg",
+      "sha256": "4ba63e0e12cb4e9cd7caa554b8c77b3d73014bd2a0cb613c07cbd861f481275c",
+      "bytes": 28145
+    },
+    {
+      "path": "kit/wizard/splash.html",
+      "sha256": "408256a110fd1f313c37297f29c8a1bf34c1897bb3ec69c9e07590084cc04282",
+      "bytes": 9323
+    },
+    {
+      "path": "kit/wizard/telemetry-test.mjs",
+      "sha256": "b5356d9c1f762bf8f6061536982451a678477d94451701a2b920a05c70f619ec",
+      "bytes": 3734
+    },
+    {
+      "path": "kit/wizard/ui.html",
+      "sha256": "582ab30575af5ca65d6e458c3905ae454cff84a535b040c73d7f0785ca8b38a0",
+      "bytes": 34599
+    },
+    {
+      "path": "kit/wizard/update-test.mjs",
+      "sha256": "1d9afc0199f537f66b52bdaa069ce64ea094f0954c951acb1d86b647b9f422a7",
+      "bytes": 3212
+    },
+    {
+      "path": "scripts/judge-fresh-install.sh",
+      "sha256": "54cea8b77b201e9565ef1d70b78b8af4db37f34b5aa0f457d07df324f753cf2d",
+      "bytes": 12740
+    },
+    {
+      "path": "scripts/mirror-to-spine-os.mjs",
+      "sha256": "bcf267901cde54c6ea500e9c36c518fabb4f7630d396501b444f4bfb68d4913c",
+      "bytes": 2375
+    },
+    {
+      "path": "scripts/pin-release.mjs",
+      "sha256": "e6b6cefc8da98719bbdbe880076bb734334102f23d3419bf71d58bd5c1e1421c",
+      "bytes": 3286
+    },
+    {
+      "path": "scripts/verify-all.mjs",
+      "sha256": "f67db96fc0ff229a369eca3e89d79a6f11ed192f8d48f9965a5441cd35d67d41",
+      "bytes": 3298
+    },
+    {
+      "path": "scripts/windows-static-check.mjs",
+      "sha256": "47cc891ba51653c6816a432dce8e23fd91df54fab0dd4b09cb5e2c5ce373bfe2",
+      "bytes": 2807
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Spine OS — Command Centre</title>
+<!--
+  Spine OS · branded command centre. Single file, offline, no server, no network calls.
+  Everything here is driven by ./status-board.js (a copy of status-board.json that the
+  installer stamps in YOUR brand). To change it: edit status-board.json, then run
+  `node refresh-status-board.mjs`. Never edit status-board.js directly.
+-->
+<style>
+  :root {
+    color-scheme: dark;
+    --brand: #14b8a6;
+    --brand-2: #22d3ee;
+    --ink: #e6edf8; --mut: #93a6c4; --line: rgba(255,255,255,.10); --panel: rgba(15,23,42,.6);
+    --ok: #34d399; --warn: #f59e0b; --stop: #f87171;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1100px 520px at 50% -10%, color-mix(in srgb, var(--brand) 30%, #07131f) 0%, #07131f 55%, #050a12 100%);
+    color: var(--ink); min-height: 100vh; padding: 30px 20px 56px; }
+  .wrap { max-width: 1040px; margin: 0 auto; }
+  .edge { height: 3px; border-radius: 3px; background: linear-gradient(90deg, var(--brand), var(--brand-2) 60%, #84cc16); }
+  header { display: flex; align-items: center; gap: 16px; margin: 22px 0 4px; flex-wrap: wrap; }
+  .mark { width: 46px; height: 46px; border-radius: 12px; flex: none; object-fit: cover;
+    display: grid; place-items: center; font-weight: 800; font-size: 20px; color: #04201c;
+    background: linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .mark[hidden] { display: none; }
+  .id { display: flex; flex-direction: column; gap: 2px; margin-right: auto; }
+  h1 { font-size: 25px; margin: 0; letter-spacing: -.01em; }
+  .tag { color: var(--mut); font-size: 14px; }
+  .chip { align-self: center; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--brand-2); border: 1px solid color-mix(in srgb, var(--brand-2) 40%, transparent); border-radius: 999px; padding: 4px 11px; }
+  .when { color: var(--mut); font-size: 13px; text-align: right; }
+  .row { display: grid; gap: 14px; margin-top: 20px; }
+  .cols { grid-template-columns: 1.3fr 1fr; }
+  @media (max-width: 760px) { .cols { grid-template-columns: 1fr; } }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px;
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  .card h2 { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--mut); margin: 0 0 12px; font-weight: 700; }
+  .board { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+  .board li { display: flex; align-items: center; gap: 11px; font-size: 14.5px; }
+  .dot { width: 10px; height: 10px; border-radius: 999px; flex: none; box-shadow: 0 0 10px currentColor; }
+  .dot.green { color: var(--ok); background: var(--ok); }
+  .dot.amber { color: var(--warn); background: var(--warn); }
+  .dot.red { color: var(--stop); background: var(--stop); }
+  .metrics { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+  .metric { background: rgba(255,255,255,.03); border: 1px solid var(--line); border-radius: 12px; padding: 12px; text-align: center; }
+  .metric b { display: block; font-size: 22px; color: var(--brand-2); }
+  .metric span { font-size: 11px; color: var(--mut); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); gap: 12px; }
+  .tile { background: rgba(15,23,42,.55); border: 1px solid var(--line); border-radius: 14px; padding: 16px; text-decoration: none; color: inherit; display: block; transition: border-color .15s, transform .15s; }
+  .tile:hover { border-color: var(--brand); transform: translateY(-1px); }
+  .tile h3 { margin: 0 0 4px; font-size: 15px; color: color-mix(in srgb, var(--brand-2) 80%, #fff); }
+  .tile p { margin: 0; font-size: 12.5px; color: #b6c6dd; }
+  footer { margin-top: 26px; font-size: 12px; color: #6f86a8; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .env { font-family: ui-monospace, Menlo, Consolas, monospace; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="edge"></div>
+    <header>
+      <img id="logo" class="mark" alt="" hidden />
+      <div id="monogram" class="mark">S</div>
+      <div class="id">
+        <h1 id="brand">Spine OS</h1>
+        <span class="tag" id="tagline">Your business on your hard drive.</span>
+      </div>
+      <span class="chip" id="industry" hidden></span>
+      <span class="when" id="today"></span>
+    </header>
+
+    <div class="row cols">
+      <div class="card">
+        <h2>Status board</h2>
+        <ul class="board" id="board"><li><span class="dot amber"></span>Loading your board…</li></ul>
+      </div>
+      <div class="card">
+        <h2>At a glance</h2>
+        <div class="metrics">
+          <div class="metric"><b id="m-adrs">0</b><span>Open ADRs</span></div>
+          <div class="metric"><b id="m-sops">0</b><span>SOPs</span></div>
+          <div class="metric"><b id="m-dec">—</b><span>Last decision</span></div>
+        </div>
+        <h2 style="margin-top:16px">Your AI</h2>
+        <ul class="board" id="aiboard"><li><span class="dot amber"></span>Not connected yet — reopen the Spine OS installer and choose Connect your AI.</li></ul>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <h2>Jump in</h2>
+      <div class="grid" id="actions">
+        <a class="tile" href="vault/00-INBOX/"><h3>🧭 Your first move</h3><p>Capture one live priority in your local inbox.</p></a>
+        <a class="tile" href="vault/00-INBOX/"><h3>📥 Inbox</h3><p>Capture first, sort later.</p></a>
+        <a class="tile" href="vault/10-PROJECTS/"><h3>🗂 Projects</h3><p>One folder per engagement.</p></a>
+        <a class="tile" href="vault/20-GOVERNANCE/"><h3>⚖️ Governance</h3><p>ADRs &amp; SOPs, written once.</p></a>
+        <a class="tile" href="vault/30-CLIENTS/"><h3>👥 Clients</h3><p>People and matters on your turf.</p></a>
+        <a class="tile" href="_config/ai-connection.json"><h3>🤖 Your AI connection</h3><p>See the locally verified client and wiring receipt.</p></a>
+      </div>
+    </div>
+
+    <footer>
+      <span class="env" id="env">Spine OS</span>
+      <span>·</span><span id="synced">local-first · optional install ping only if you opt in</span>
+    </footer>
+  </div>
+
+  <!-- Board data: plain .js files, load offline in every browser (no fetch, no server).
+       llm.local.js is written by the wizard's Connect step; absent = "not connected" state. -->
+  <script src="./status-board.js"></script>
+  <script src="./_config/llm.local.js"></script>
+  <script>
+  (function () {
+    var B = window.__STATUS_BOARD__ || {};
+    var brand = B.brand || {};
+    var meta = B.meta || {};
+    document.getElementById('env').textContent = 'Spine OS v' + (meta.version || '?');
+    // Brand colours drive the whole theme; :root holds sane defaults if unset.
+    if (brand.primary) document.documentElement.style.setProperty('--brand', brand.primary);
+    if (brand.secondary) document.documentElement.style.setProperty('--brand-2', brand.secondary);
+    // Brand — driven entirely from status-board.js (offline-safe, no tokens to break).
+    var nameEl = document.getElementById('brand');
+    nameEl.textContent = (brand.name && brand.name.trim()) || 'Spine OS';
+    document.title = nameEl.textContent + ' — Command Centre';
+    var tagEl = document.getElementById('tagline');
+    tagEl.textContent = (brand.tagline && brand.tagline.trim()) || 'Your business on your hard drive.';
+    var indEl = document.getElementById('industry');
+    if (brand.industry && brand.industry.trim()) { indEl.textContent = brand.industry; indEl.hidden = false; }
+
+    // Logo or monogram.
+    var logo = document.getElementById('logo'), mono = document.getElementById('monogram');
+    var logoSrc = (brand.logo || '').trim();
+    if (logoSrc) { logo.src = logoSrc; logo.hidden = false; mono.hidden = true;
+      logo.onerror = function(){ logo.hidden = true; mono.hidden = false; }; }
+    else { mono.textContent = (nameEl.textContent.trim()[0] || 'S').toUpperCase(); }
+
+    // Date.
+    try { document.getElementById('today').textContent =
+      new Date().toLocaleDateString(undefined, { weekday:'long', year:'numeric', month:'long', day:'numeric' }); } catch(e){}
+
+    // Status board (traffic light).
+    var items = Array.isArray(B.items) ? B.items : [];
+    var board = document.getElementById('board');
+    if (items.length) {
+      board.innerHTML = '';
+      items.forEach(function (it) {
+        var li = document.createElement('li');
+        var s = (it.status || 'amber').toLowerCase();
+        var cls = s === 'green' ? 'green' : s === 'red' ? 'red' : 'amber';
+        li.innerHTML = '<span class="dot ' + cls + '"></span>';
+        li.appendChild(document.createTextNode(it.label || ''));
+        board.appendChild(li);
+      });
+    } else { board.innerHTML = '<li><span class="dot green"></span>All clear — add items in status-board.json</li>'; }
+
+    // Quick actions (optional JSON override of the default lane tiles).
+    if (Array.isArray(B.quick_actions) && B.quick_actions.length) {
+      var g = document.getElementById('actions'); g.innerHTML = '';
+      B.quick_actions.forEach(function (a) {
+        var el = document.createElement('a'); el.className = 'tile'; el.href = a.href || '#';
+        var h = document.createElement('h3'); h.textContent = a.label || '';
+        var p = document.createElement('p'); p.textContent = a.note || '';
+        el.appendChild(h); el.appendChild(p); g.appendChild(el);
+      });
+    }
+
+    // Your AI (from _config/llm.local.js — written by the wizard's Connect step; keyRef only, never a key).
+    var AI = window.__SPINEOS_AI__;
+    if (AI && AI.tier) {
+      var TIER = { prompt: 'Pasteable prompt (any AI)', local: 'Local model (Ollama) — private', cloud: 'Cloud key (in your OS keychain)' };
+      var ab = document.getElementById('aiboard'); ab.innerHTML = '';
+      [ { s: 'green', t: (TIER[AI.tier] || AI.tier) + (AI.provider ? ' · ' + AI.provider : '') + (AI.model ? ' · ' + AI.model : '') },
+        { s: AI.phi_guardrail === 'local-first' ? 'green' : 'amber', t: 'Confidentiality guardrail: ' + (AI.phi_guardrail === 'local-first' ? 'local-first (clinical/legal)' : 'standard') },
+        { s: 'green', t: 'Key: ' + (AI.keyRef === 'none' ? 'none needed' : AI.keyRef) },
+        { s: 'green', t: 'Connected ' + String(AI.connected_utc || '').slice(0, 10) + ' · MCP snippet: _config/mcp.sample.json' },
+      ].forEach(function (r) {
+        var li = document.createElement('li');
+        li.innerHTML = '<span class="dot ' + r.s + '"></span>';
+        li.appendChild(document.createTextNode(r.t));
+        ab.appendChild(li);
+      });
+    }
+
+    // Metrics.
+    var meta = B.meta || {};
+    document.getElementById('m-adrs').textContent = (meta.adrs_open != null ? meta.adrs_open : 0);
+    document.getElementById('m-sops').textContent = (meta.sops != null ? meta.sops : 0);
+    document.getElementById('m-dec').textContent = (meta.last_decision || '—');
+    if (meta.version) document.getElementById('env').textContent = 'Spine OS v' + meta.version;
+  })();
+  </script>
+</body>
+</html>

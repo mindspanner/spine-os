@@ -1,0 +1,23 @@
+{
+  "mode": "admin",
+  "unattended": true,
+  "licenceAccepted": false,
+  "eulaSha256": "REPLACE_AFTER_THE_CLIENT_REVIEWS_AND_ACCEPTS_THE_BUNDLED_FINAL_EULA",
+  "root": "REPLACE_WITH_AN_ABSOLUTE_CLIENT_FOLDER",
+  "telemetryOptIn": false,
+  "form": {
+    "brand": "Client Business",
+    "brandColor": "#2dd4bf",
+    "depth": "guided",
+    "persona": "general",
+    "organising": "actionability",
+    "governance": "light",
+    "projectTypes": ["Client delivery"],
+    "connectors": []
+  },
+  "connect": {
+    "tier": "prompt",
+    "client": "other",
+    "provider": "other"
+  }
+}

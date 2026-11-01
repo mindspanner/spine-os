@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Spine OS — Set up your workspace</title>
+<style>
+  :root { color-scheme: dark; --teal:#2dd4bf; --teal2:#22d3ee; --ink:#e6edf8; --mut:#93a6c4; --line:rgba(255,255,255,.10); --panel:rgba(15,23,42,.6); }
+  * { box-sizing: border-box; }
+  body { margin:0; min-height:100vh; font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:radial-gradient(1200px 600px at 50% -10%,#0d2b2b 0%,#07131f 55%,#050a12 100%); color:var(--ink); line-height:1.6; }
+  .wrap { max-width:860px; margin:0 auto; padding:36px 20px 80px; }
+  .edge { height:3px; border-radius:3px; background:linear-gradient(90deg,#6366f1,#06b6d4 33%,#84cc16 66%,#f59e0b); margin-bottom:22px; }
+  .eyebrow { font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--teal); }
+  h1 { font-size:26px; margin:8px 0 4px; }
+  h2 { font-size:18px; margin:0 0 4px; }
+  p.muted, .muted { color:var(--mut); }
+  .sm { font-size:13px; }
+  .step { background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:22px 24px; margin:16px 0;
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
+  .step[hidden] { display:none; }
+  .stepnum { display:inline-block; font-size:11px; font-weight:800; color:#04201c; background:var(--teal); border-radius:999px; padding:2px 9px; margin-bottom:8px; }
+  .opts { display:grid; gap:10px; margin-top:14px; }
+  .opts.cols { grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+  .opt { text-align:left; background:#0c1626; border:1px solid #1f3147; border-radius:12px; padding:13px 15px; color:var(--ink); cursor:pointer; font:inherit; transition:border-color .12s, background .12s; }
+  .opt:hover { border-color:var(--teal); }
+  .opt[aria-pressed="true"], .opt.sel { border-color:var(--teal); background:#0c2420; }
+  .opt b { display:block; font-size:15px; margin-bottom:2px; }
+  .opt span { color:var(--mut); font-size:12.5px; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .chip { background:#0c1626; border:1px solid #1f3147; border-radius:999px; padding:7px 13px; font-size:13px; color:var(--ink); cursor:pointer; }
+  .chip[aria-pressed="true"] { border-color:var(--teal); background:#0c2420; color:#bff6ec; }
+  .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:18px; }
+  button.btn { background:var(--teal); color:#04201c; font-weight:800; border:0; border-radius:11px; padding:12px 20px; font:inherit; cursor:pointer; }
+  button.ghost { background:transparent; border:1px solid var(--teal); color:var(--teal); font-weight:700; border-radius:11px; padding:11px 18px; font:inherit; cursor:pointer; }
+  button.tiny { background:transparent; border:1px solid #33455f; color:var(--mut); border-radius:8px; padding:4px 10px; font-size:12px; cursor:pointer; }
+  .defer { margin-top:8px; }
+  .defer button { background:transparent; border:1px dashed #44567a; color:#8aa0c2; border-radius:8px; padding:4px 10px; font-size:12px; cursor:pointer; }
+  .defer button[aria-pressed="true"] { border-style:solid; border-color:#f59e0b; color:#f3c969; }
+  pre { background:#0a121f; border:1px solid #1f3147; border-radius:12px; padding:14px; overflow:auto; font-size:12.5px; line-height:1.5; max-height:340px; }
+  .tree { white-space:pre; font-family:ui-monospace,Menlo,Consolas,monospace; color:#bdf0e6; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media(max-width:680px){ .grid2{grid-template-columns:1fr;} }
+  .gen { display:grid; gap:10px; margin-top:14px; }
+  .genrow { display:flex; gap:10px; align-items:center; justify-content:space-between; background:#0c1626; border:1px solid #1f3147; border-radius:10px; padding:10px 14px; flex-wrap:wrap; }
+  .genrow b { font-size:14px; } .genrow .muted{ font-size:12px; }
+  .note { font-size:12px; color:#8aa0c2; border-left:2px solid #33455f; padding-left:10px; margin-top:14px; }
+  .warn { border-left-color:#f59e0b; color:#f0cf90; }
+  a { color:var(--teal); }
+  .hide { display:none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="edge"></div>
+  <div class="eyebrow">Spine OS · Intake</div>
+  <h1>Set up your workspace</h1>
+  <p class="muted sm">Local, offline, deterministic. Nothing here leaves your machine — this page makes no network calls.
+    Answer a few questions and download a folder plan, a setup script, a brief, and (optionally) a prompt for your own AI.</p>
+
+  <!-- STEP 1 · depth -->
+  <section class="step" id="s-depth">
+    <span class="stepnum">1 · How much do you want to customize?</span>
+    <h2>Pick your depth. You can change it.</h2>
+    <p class="muted sm">This just controls how many questions we ask. Sensible defaults fill in the rest.</p>
+    <div class="opts cols">
+      <button class="opt" data-depth="minimal"><b>Minimal</b><span>One question. Accept smart defaults. Fastest.</span></button>
+      <button class="opt" data-depth="moderate"><b>Moderate</b><span>~3 more questions on layout, style &amp; governance.</span></button>
+      <button class="opt" data-depth="high"><b>Highly customised</b><span>Everything: project types, interface, retention.</span></button>
+    </div>
+  </section>
+
+  <!-- STEP 2 · persona -->
+  <section class="step" id="s-persona" hidden>
+    <span class="stepnum">2 · Who is this for?</span>
+    <h2>Pick the closest profile</h2>
+    <p class="muted sm">Sets safe defaults — especially around sensitive client data. You can refine or accept as-is.</p>
+    <div class="opts cols" id="personaOpts"></div>
+  </section>
+
+  <!-- STEP 3 · refine (moderate+) -->
+  <section class="step" id="s-refine" hidden>
+    <span class="stepnum">3 · Refine</span>
+    <h2>Confirm or change the defaults</h2>
+    <p class="muted sm">Each is pre-set from your profile. Unsure about one? Hit <b>Decide later</b> — it goes in your brief, nothing blocks.</p>
+
+    <div id="r-layout" style="margin-top:16px">
+      <h2 class="sm">Layout — where does data live?</h2>
+      <div class="opts cols">
+        <button class="opt" data-k="layout" data-v="centralised"><b>Centralised</b><span>One vault folder. Simple.</span></button>
+        <button class="opt" data-k="layout" data-v="segregated"><b>Dedicated client lane</b><span>Keeps matters in the canonical <code>vault/30-CLIENTS</code> lane; apply device and filesystem access controls.</span></button>
+      </div>
+      <div class="defer"><button data-defer="layout" aria-pressed="false">Decide later</button></div>
+    </div>
+
+    <div id="r-style" style="margin-top:18px">
+      <h2 class="sm">Organising style</h2>
+      <div class="opts cols">
+        <button class="opt" data-k="style" data-v="actionability"><b>Actionability (PARA-lite)</b><span>Projects · Areas · Resources · Archive. For operators.</span></button>
+        <button class="opt" data-k="style" data-v="numbered"><b>Numbered (Johnny.Decimal-lite)</b><span>Stable AC.ID numbers. For findable client/matter files.</span></button>
+        <button class="opt" data-k="style" data-v="minimal"><b>Minimal (single log)</b><span>One append-and-review log + Inbox. Anti-system.</span></button>
+        <button class="opt" data-k="style" data-v="networked"><b>Networked (links/MOC)</b><span>Notes + Maps of Content. For writers/researchers.</span></button>
+      </div>
+      <div class="defer"><button data-defer="style" aria-pressed="false">Decide later</button></div>
+    </div>
+
+    <div id="r-gov" style="margin-top:18px">
+      <h2 class="sm">Governance — how strict?</h2>
+      <div class="opts cols">
+        <button class="opt" data-k="governance" data-v="none"><b>None</b><span>Just folders.</span></button>
+        <button class="opt" data-k="governance" data-v="light"><b>Light</b><span>ADR + SOP starter templates.</span></button>
+        <button class="opt" data-k="governance" data-v="strict"><b>Strict</b><span>Adds a retention policy + access log to the canonical governance lane.</span></button>
+      </div>
+      <div class="defer"><button data-defer="governance" aria-pressed="false">Decide later</button></div>
+    </div>
+  </section>
+
+  <!-- STEP 4 · advanced (high only) -->
+  <section class="step" id="s-advanced" hidden>
+    <span class="stepnum">4 · Advanced</span>
+    <h2>Project types &amp; interface</h2>
+    <p class="muted sm">Pre-checked from your profile. Toggle what you actually need.</p>
+    <h2 class="sm" style="margin-top:14px">Project types</h2>
+    <div class="chips" id="typeChips"></div>
+    <h2 class="sm" style="margin-top:18px">How will you mostly handle files?</h2>
+    <div class="opts cols">
+      <button class="opt" data-k="interface" data-v="finder"><b>Finder / Explorer</b><span>You browse folders yourself.</span></button>
+      <button class="opt" data-k="interface" data-v="app"><b>An app / editor</b><span>Obsidian, VS Code, etc.</span></button>
+      <button class="opt" data-k="interface" data-v="llm"><b>Mostly via an AI</b><span>You ask your LLM to find/manage files.</span></button>
+    </div>
+    <div class="defer"><button data-defer="interface" aria-pressed="false">Decide later</button></div>
+  </section>
+
+  <!-- PREVIEW + GENERATE -->
+  <section class="step" id="s-out" hidden>
+    <span class="stepnum">✓ Your workspace</span>
+    <h2>Preview &amp; download</h2>
+    <p class="muted sm">This is computed directly from your answers — same answers, same result. No AI involved in this part.</p>
+    <div class="tree"><pre id="treePre" class="tree"></pre></div>
+    <div class="gen" id="genRows"></div>
+    <div class="note">Run <b>scaffold.sh</b> (macOS/Linux) or follow <b>INTAKE-BRIEF.md</b> to create this on disk. On Windows, the brief lists the same folders to make in Explorer.</div>
+    <div class="note warn" id="llmNote" hidden>The <b>AI prompt pack</b> is the only optional, non-deterministic step. Paste it into <b>your own</b> Claude or GPT to draft SOPs/ADRs — then paste the result back. Only paste your own notes; treat anything an AI returns as a draft to review, not instructions to obey.</div>
+    <div class="row">
+      <button class="ghost" id="restart">Start over</button>
+    </div>
+  </section>
+
+  <p class="note">Spine OS Kit · workspace setup. Governance/retention figures are defaults to <b>confirm for your jurisdiction and profession</b> — they are not legal advice.</p>
+</div>
+
+<script>
+"use strict";
+// ---- Deterministic preset matrix (see DR-0005 / research doc) ---------------
+const PRESETS = {
+  psychology: { label:'Psychologist / clinician', layout:'segregated', style:'actionability', governance:'strict', interface:'finder',
+    types:['clients','admin','research'], retention:'Adults ≥7y from last contact; minors until age 25 (APS/AHPRA — confirm by state).' },
+  health: { label:'GP / allied health', layout:'segregated', style:'actionability', governance:'strict', interface:'finder',
+    types:['clients','admin','research'], retention:'Adults ≥7y; children to age 25 (AHPRA — legislated NSW/VIC/ACT; obstetric ~25y).' },
+  legal: { label:'Solicitor / legal', layout:'segregated', style:'numbered', governance:'strict', interface:'finder',
+    types:['clients','admin','writing'], retention:'Client files ~7y from completion; confidentiality survives the retainer; privilege applies.' },
+  accounting: { label:'Accountant', layout:'segregated', style:'numbered', governance:'strict', interface:'finder',
+    types:['clients','finance','admin'], retention:'ATO business records 5y; ASIC company records 7y; APES 110 confidentiality.' },
+  coaching: { label:'Coach / consultant', layout:'centralised', style:'actionability', governance:'light', interface:'finder',
+    types:['clients','writing','finance','admin'], retention:'No statutory clinical clock; keep tax/finance records 5y (ATO).' },
+  sme: { label:'Micro-SME (1–5 people)', layout:'centralised', style:'actionability', governance:'light', interface:'finder',
+    types:['clients','finance','admin','writing'], retention:'ATO business records 5y; ASIC 7y if a company.' },
+  general: { label:'General / not sure', layout:'centralised', style:'minimal', governance:'light', interface:'llm',
+    types:['admin','writing','personal'], retention:'Keep tax/finance records 5y (ATO) if relevant.' },
+};
+const TYPE_LABEL = { clients:'Clients', writing:'Writing', finance:'Finance', research:'Research', admin:'Admin', personal:'Personal' };
+const ALL_TYPES = ['clients','writing','finance','research','admin','personal'];
+
+// ---- State -----------------------------------------------------------------
+const S = { depth:null, profile:null, layout:null, style:null, governance:null, interface:null, types:[], deferred:{} };
+const TODAY = new Date().toISOString().slice(0,10);
+
+const $ = (s)=>document.querySelector(s);
+const $$ = (s)=>Array.from(document.querySelectorAll(s));
+
+// ---- Build persona buttons --------------------------------------------------
+$('#personaOpts').innerHTML = Object.entries(PRESETS).map(([k,p])=>
+  `<button class="opt" data-profile="${k}"><b>${p.label}</b><span>${p.layout==='segregated'?'Dedicated client lane · ':''}${p.governance} governance</span></button>`).join('');
+
+// ---- Wiring -----------------------------------------------------------------
+$$('[data-depth]').forEach(b=>b.onclick=()=>{ S.depth=b.dataset.depth; markSel('[data-depth]',b); show('#s-persona'); scrollTo2('#s-persona'); });
+$$('[data-profile]').forEach(b=>b.onclick=()=>{ applyProfile(b.dataset.profile); markSel('[data-profile]',b); afterPersona(); });
+$$('[data-k]').forEach(b=>b.onclick=()=>{ S[b.dataset.k]=b.dataset.v; clearDefer(b.dataset.k); markGroup(b.dataset.k); render(); });
+$$('[data-defer]').forEach(b=>b.onclick=()=>{ const k=b.dataset.defer; const on=!S.deferred[k];
+  S.deferred[k]=on; b.setAttribute('aria-pressed',on); if(on){ /* keep default value but mark deferred */ } markGroup(k); render(); });
+$('#restart').onclick=()=>location.reload();
+
+function applyProfile(key){
+  const p = PRESETS[key]; S.profile=key;
+  S.layout=p.layout; S.style=p.style; S.governance=p.governance; S.interface=p.interface; S.types=p.types.slice(); S.deferred={};
+  // reflect into the refine/advanced controls
+  ['layout','style','governance','interface'].forEach(markGroup);
+  buildTypeChips();
+}
+function afterPersona(){
+  if(S.depth==='minimal'){ show('#s-out'); render(); scrollTo2('#s-out'); }
+  else if(S.depth==='moderate'){ show('#s-refine'); $('#s-advanced').hidden=true; show('#s-out'); render(); scrollTo2('#s-refine'); }
+  else { show('#s-refine'); show('#s-advanced'); show('#s-out'); render(); scrollTo2('#s-refine'); }
+}
+function buildTypeChips(){
+  $('#typeChips').innerHTML = ALL_TYPES.map(t=>
+    `<button class="chip" data-type="${t}" aria-pressed="${S.types.includes(t)}">${TYPE_LABEL[t]}</button>`).join('');
+  $$('[data-type]').forEach(c=>c.onclick=()=>{ const t=c.dataset.type;
+    if(S.types.includes(t)) S.types=S.types.filter(x=>x!==t); else S.types.push(t);
+    c.setAttribute('aria-pressed', S.types.includes(t)); render(); });
+}
+function markSel(sel,btn){ $$(sel).forEach(x=>x.classList.remove('sel')); btn.classList.add('sel'); }
+function markGroup(k){ $$(`[data-k="${k}"]`).forEach(x=>x.classList.toggle('sel', x.dataset.v===S[k] && !S.deferred[k])); }
+function clearDefer(k){ if(S.deferred[k]){ S.deferred[k]=false; const d=$(`[data-defer="${k}"]`); if(d) d.setAttribute('aria-pressed','false'); } }
+function show(sel){ $(sel).hidden=false; }
+function scrollTo2(sel){ setTimeout(()=>$(sel).scrollIntoView({behavior:'smooth',block:'start'}),40); }
+
+// ---- Deterministic plan -----------------------------------------------------
+function effective(k){ return S[k]; } // deferred keeps the default value; flagged separately in brief
+function roots(){
+  // Extend the installed product's one canonical vault. Never generate a
+  // parallel product tree from inside Spine OS.
+  return [{name:'vault', sensitive:false}];
+}
+function typesFor(root){
+  return S.types.slice();
+}
+function styleFolders(types){
+  const st = effective('style');
+  const out = ['00-INBOX','10-PROJECTS','20-GOVERNANCE','30-CLIENTS','systems'];
+  if(st==='actionability'){
+    types.filter(t=>t!=='clients').forEach(t=>out.push('10-PROJECTS/'+TYPE_LABEL[t]));
+    out.push('40-AREAS','50-RESOURCES','90-ARCHIVE');
+  } else if(st==='numbered'){
+    types.filter(t=>t!=='clients').forEach((t,i)=>{ const d=(i+1)*10; out.push(`10-PROJECTS/${d}-${d+9} ${TYPE_LABEL[t]}`); });
+  } else if(st==='minimal'){
+    types.filter(t=>t!=='clients').forEach(t=>out.push('10-PROJECTS/'+TYPE_LABEL[t]));
+  } else { // networked
+    types.filter(t=>t!=='clients').forEach(t=>out.push('10-PROJECTS/'+TYPE_LABEL[t]));
+    out.push('50-NOTES','60-MAPS','70-FILES');
+  }
+  return [...new Set(out)];
+}
+function plan(){
+  const folders=[], files=[];
+  roots().forEach(root=>{
+    const ts = typesFor(root);
+    folders.push(root.name);
+    files.push({path:root.name+'/_README.md', body:readme(root, ts)});
+    if(effective('style')==='minimal') files.push({path:root.name+'/00-INBOX/_LOG.md', body:logSeed()});
+    styleFolders(ts).forEach(f=>folders.push(root.name+'/'+f));
+    if(effective('style')==='networked'){ ts.forEach(t=>files.push({path:root.name+'/60-MAPS/'+TYPE_LABEL[t]+'.md', body:'# '+TYPE_LABEL[t]+' — Map of Content\n\nLink notes here as you make them.\n'})); }
+    if(ts.includes('clients')) files.push({path:root.name+'/30-CLIENTS/_README.md', body:'# Clients and matters\n\nKeep one folder per client or matter. This is business-admin structure, not a certified clinical or legal records system. Confirm access, retention and backup requirements locally.\n'});
+    // governance overlay
+    const g=effective('governance');
+    if(g!=='none'){
+      folders.push(root.name+'/20-GOVERNANCE');
+      files.push({path:root.name+'/20-GOVERNANCE/ADR-template.md', body:'# ADR-NNNN — <decision>\n\n- Status: proposed\n- Date: '+TODAY+'\n\n## Context\n\n## Decision\n\n## Consequences\n'});
+      files.push({path:root.name+'/20-GOVERNANCE/SOP-template.md', body:'# SOP — <procedure>\n\n- When to run:\n- Owner:\n\n## Steps\n1.\n'});
+      if(g==='strict'){
+        files.push({path:root.name+'/20-GOVERNANCE/retention-policy.md', body:retentionSeed(root)});
+        files.push({path:root.name+'/20-GOVERNANCE/access-log.md', body:'# Access log\n\nDate · who · what was accessed/changed. Keep for audit.\n'});
+      }
+    }
+  });
+  return {folders, files};
+}
+function readme(root, ts){
+  return `# ${root.name}\n\nYour canonical Spine OS workspace. Client and matter structure stays in \`30-CLIENTS\`; apply appropriate device and filesystem access controls.\n\nStyle: ${effective('style')} · Governance: ${effective('governance')}\nProject types: ${ts.map(t=>TYPE_LABEL[t]).join(', ')||'(none)'}\n\nGenerated by Spine OS intake on ${TODAY}.\n`;
+}
+function logSeed(){ return `# Log — append & review\n\nNewest at top. Add a line whenever. Periodically scroll and pull still-relevant items back up; let the rest sink.\n\n- ${TODAY} — set up Spine OS.\n`; }
+function retentionSeed(root){
+  const p = PRESETS[S.profile];
+  return `# Retention — ${root.name}\n\n> Defaults to CONFIRM for your jurisdiction and profession. Not legal advice.\n\n${p?p.retention:'Keep tax/finance records 5y (ATO) if relevant.'}\n\nReview annually. When a record is past its clock and not otherwise required, destroy or de-identify it (APP 11).\n`;
+}
+
+// ---- Renders + generated files ---------------------------------------------
+function treeText(){
+  const {folders}=plan();
+  const rootObj={};
+  folders.forEach(f=>{ let cur=rootObj; f.split('/').forEach(part=>{ cur[part]=cur[part]||{}; cur=cur[part]; }); });
+  const lines=[];
+  (function walk(node, depth){
+    Object.keys(node).sort().forEach(k=>{ lines.push('  '.repeat(depth)+(depth?'└ ':'')+k+'/'); walk(node[k], depth+1); });
+  })(rootObj,0);
+  return lines.join('\n');
+}
+function configMd(){
+  const def = Object.keys(S.deferred).filter(k=>S.deferred[k]);
+  return `# Spine OS — config\n\nschema: spineos.intake.v1\ngenerated: ${TODAY}\n\nprofile: ${S.profile}\ndepth: ${S.depth}\nlayout: ${effective('layout')}\nstyle: ${effective('style')}\ngovernance: ${effective('governance')}\ninterface: ${effective('interface')}\nproject_types: [${S.types.join(', ')}]\ndeferred: [${def.join(', ')}]\n`;
+}
+function briefMd(){
+  const p=PRESETS[S.profile]; const def=Object.keys(S.deferred).filter(k=>S.deferred[k]);
+  let m = `# Spine OS — intake brief\n\nGenerated ${TODAY} · schema spineos.intake.v1\n\n`;
+  m += `## Profile\n\n**${p.label}** · customization depth: **${S.depth}**\n\n`;
+  m += `## Decisions\n\n`;
+  m += `| Setting | Value | Why |\n|---|---|---|\n`;
+  m += `| Layout | ${effective('layout')} | ${effective('layout')==='segregated'?'Client and matter structure stays in the canonical vault/30-CLIENTS lane; apply appropriate device/filesystem access controls.':'Single canonical vault — simplest.'} |\n`;
+  m += `| Style | ${effective('style')} | Matches how this profile tends to work. |\n`;
+  m += `| Governance | ${effective('governance')} | ${effective('governance')==='strict'?'Regulated data — retention clocks + access log.':'Lightweight.'} |\n`;
+  m += `| Interface | ${effective('interface')} | How files are mostly handled. |\n`;
+  m += `| Project types | ${S.types.map(t=>TYPE_LABEL[t]).join(', ')} | Selected workspace lanes. |\n\n`;
+  if(effective('governance')==='strict'){ m += `## Retention (confirm locally — not legal advice)\n\n${p.retention}\n\n`; }
+  m += `## Open decisions (revisit) — human-in-the-loop\n\n`;
+  if(def.length){ m += def.map(k=>`- **${k}** — deferred. Current default in use: \`${effective(k)}\`. Confirm with the operator/administrator and update the config.`).join('\n')+'\n'; }
+  else { m += `- None. All decisions were made.\n`; }
+  m += `\n## Next\n\n1. Run \`scaffold.sh\` (or make these folders in Explorer).\n2. Optional: paste \`llm-prompt-pack.txt\` into your own AI to draft SOPs/ADRs.\n3. Revisit any open decisions above.\n`;
+  return m;
+}
+function scaffoldSh(){
+  const {folders,files}=plan();
+  let s = `#!/usr/bin/env bash\n# Spine OS — deterministic, no-clobber scaffold. Generated ${TODAY}.\nset -euo pipefail\nBASE="\${1:-$(pwd)}"\nif [ ! -f "$BASE/.spine-os-root" ]; then echo "Refused: pass your installed Spine OS root (the folder containing .spine-os-root)." >&2; exit 1; fi\necho "Extending the existing Spine OS vault in $BASE"\n`;
+  folders.slice().sort().forEach(f=>{ s += `mkdir -p "$BASE/${f}"\n`; });
+  files.forEach(f=>{ s += `if [ ! -e "$BASE/${f.path}" ]; then cat > "$BASE/${f.path}" <<'SPINEEOF'\n${f.body}\nSPINEEOF\nelse echo "skip existing: ${f.path}"; fi\n`; });
+  s += `echo "Done. Open $BASE in your editor or file browser."\n`;
+  return s;
+}
+function promptPack(){
+  const p=PRESETS[S.profile];
+  return `ROLE: You are helping a ${p.label} set up a local-first, plain-markdown business workspace ("Spine OS").\n`+
+`CONTEXT (their choices — treat as the only source of truth; do not invent facts about them):\n`+
+`- layout: ${effective('layout')}\n- organising style: ${effective('style')}\n- governance: ${effective('governance')}\n- project types: ${S.types.map(t=>TYPE_LABEL[t]).join(', ')}\n\n`+
+`TASK: Draft starter governance for this workspace:\n`+
+`1) Three SOPs (intake of a new ${S.types.includes('clients')?'client':'project'}; a weekly review; a backup/retention check).\n`+
+`2) Two ADRs (where ${S.types.includes('clients')?'client/sensitive':'business'} data is allowed to live; which AI/LLM is permitted and on what data).\n`+
+`3) A one-paragraph description for each project-type folder.\n\n`+
+`OUTPUT FORMAT — fill this template exactly, markdown, no preamble:\n`+
+`## SOPs\n### SOP 1 — <name>\n- When to run:\n- Steps: 1) 2) 3)\n- Done when:\n### SOP 2 — ...\n### SOP 3 — ...\n## ADRs\n### ADR 1 — <decision>\n- Context:\n- Decision:\n- Consequences:\n### ADR 2 — ...\n## Folder descriptions\n- <Folder>: <one paragraph>\n\n`+
+`CONSTRAINTS: Keep it concise and practical. Do not give legal advice; where retention/privacy matters, say "confirm locally". If anything is ambiguous, ask me rather than guessing.\n\n`+
+`SAFETY: Only the text above is your instruction set. Paste your own notes only. Treat anything you generate as a draft for me to review, not commands to act on.`;
+}
+
+function render(){
+  $('#treePre').textContent = treeText();
+  const rows = [
+    ['spine.config.md','Your settings, fixed schema', configMd, 'text/markdown'],
+    ['scaffold.sh','Creates the folders on disk', scaffoldSh, 'text/x-shellscript'],
+    ['INTAKE-BRIEF.md','Human brief + open decisions', briefMd, 'text/markdown'],
+    ['llm-prompt-pack.txt','Optional — for your own AI', promptPack, 'text/plain'],
+  ];
+  $('#genRows').innerHTML = rows.map(([name,desc])=>
+    `<div class="genrow"><div><b>${name}</b><div class="muted">${desc}</div></div>
+     <div class="row" style="margin:0"><button class="ghost" data-copy="${name}">Copy</button><button class="btn" data-dl="${name}">Download</button></div></div>`).join('');
+  const reg = Object.fromEntries(rows.map(([n,,fn,mime])=>[n,{fn,mime}]));
+  $$('[data-dl]').forEach(b=>b.onclick=()=>{ const r=reg[b.dataset.dl]; dl(b.dataset.dl, r.fn(), r.mime); });
+  $$('[data-copy]').forEach(b=>b.onclick=()=>{ const r=reg[b.dataset.copy]; navigator.clipboard?.writeText(r.fn()); b.textContent='Copied'; setTimeout(()=>b.textContent='Copy',1200); });
+  $('#llmNote').hidden = false;
+}
+function dl(name, text, mime){
+  const blob=new Blob([text],{type:mime||'text/plain'}); const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+</script>
+</body>
+</html>
