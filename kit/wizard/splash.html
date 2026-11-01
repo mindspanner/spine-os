@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en-AU"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spine OS — Setup (splash + consent demo)</title>
+<!-- §3.8a splash/consent ceremony · corner-resize variant (operator choice S53) · runnable demo · fully local, nothing transmitted -->
+<style>
+:root{--bg:#070d12;--panel:#0d1620;--line:rgba(255,255,255,.1);--teal:#5eead4;--txt:#e8eef6;--muted:#9fb0c4;--dim:#6b7d92}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--txt);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+#splash{position:fixed;inset:0;z-index:50;background:#000;display:grid;place-items:center;transition:opacity .8s}
+#splash.gone{opacity:0;pointer-events:none}
+#splash video{max-width:100%;max-height:100%}
+#skip{position:absolute;bottom:22px;right:24px;background:rgba(255,255,255,.12);border:1px solid var(--line);color:#fff;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:600}
+#mark{position:fixed;z-index:60;left:50%;top:50%;width:140px;height:140px;opacity:0;transform:translate(-50%,-50%) scale(1);
+  transition:opacity .6s ease, transform 1.1s cubic-bezier(.7,.05,.2,1), width 1.1s cubic-bezier(.7,.05,.2,1), height 1.1s cubic-bezier(.7,.05,.2,1), left 1.1s cubic-bezier(.7,.05,.2,1), top 1.1s cubic-bezier(.7,.05,.2,1)}
+#mark.show{opacity:1}
+#mark.corner{left:34px;top:24px;width:46px;height:46px;transform:translate(0,0) scale(1)}
+@media(prefers-reduced-motion:reduce){#mark{transition:opacity .3s}#splash video{display:none}}
+#stage{max-width:760px;margin:0 auto;padding:88px 22px 64px;opacity:0;transition:opacity .6s}
+#stage.show{opacity:1}
+.eyebrow{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:800}
+h1{font-size:1.55rem;margin:.25rem 0 .35rem;letter-spacing:-.01em}
+.eulawrap{position:relative;margin-top:18px}
+#eula{height:46vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px;font-size:.92rem;color:var(--muted)}
+#eula h2{color:var(--txt);font-size:1rem;margin:1.15rem 0 .3rem}
+.efade{position:absolute;left:1px;right:1px;bottom:1px;height:42px;background:linear-gradient(transparent,var(--panel));pointer-events:none;border-radius:0 0 14px 14px;transition:opacity .3s}
+.gate{display:flex;align-items:center;gap:14px;margin-top:16px;flex-wrap:wrap}
+#accept{background:linear-gradient(180deg,#5eead4,#14b8a6);color:#05221d;border:none;border-radius:10px;padding:12px 22px;font-weight:800;font-size:.95rem;cursor:pointer}
+#accept:disabled{opacity:.4;cursor:not-allowed;filter:grayscale(.4)}
+.hint{font-size:.8rem;color:var(--dim)}
+#done{display:none;margin-top:22px;background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.3);border-radius:12px;padding:18px}
+code{background:#0a1219;padding:1px 6px;border-radius:5px;color:#bff3e9;font-size:.84em;word-break:break-all}
+</style></head>
+<body>
+
+<div id="splash">
+  <video id="vid" muted playsinline autoplay><source src="../_assets/spineos-logo-hero.mp4" type="video/mp4"></video>
+  <button id="skip">Skip →</button>
+</div>
+
+<img id="mark" src="../_assets/spineos-icon.svg" alt="Spine OS" width="140" height="140">
+
+<main id="stage" aria-hidden="true">
+  <div class="eyebrow">Spine OS · first run</div>
+  <h1>Before we get to business.</h1>
+  <p class="muted">A short licence agreement. Everything here stays on this machine — nothing is transmitted. Scroll to the end to continue.</p>
+  <div class="eulawrap">
+    <div id="eula" tabindex="0" aria-label="End User Licence Agreement">
+      <h2>Spine OS — End User Licence Agreement (v0.1 DRAFT)</h2>
+      <p><b>Draft — not legal advice.</b> A qualified Australian lawyer reviews this before any live use.</p>
+      <h2>1. Licence</h2><p>Mindspan Pty Ltd grants you a non-exclusive, non-transferable, perpetual licence to install, use and adapt the Spine OS template for your own business, on machines you control.</p>
+      <h2>2. Your data is yours</h2><p>Files and records you create stay on your storage, in open formats. Spine OS is local-first; nothing leaves your machine unless you connect something.</p>
+      <h2>3. Restrictions</h2><p>The template is licensed, not sold. You may not resell or redistribute the template itself as a competing product. Mindspan retains intellectual property in the template; you retain ownership of your data.</p>
+      <h2>4. Bring your own services</h2><p>LLM, payment, scheduling and email integrations you connect are governed by those providers' terms. Mindspan is not a party to them.</p>
+      <h2>5. Nature of service</h2><p>Spine OS is commercial software — not a registered health service, and not affiliated with or endorsed by any professional registration board. It is not clinical, legal, or financial advice.</p>
+      <h2>6. As-is & liability</h2><p>Provided “as is”. To the maximum extent permitted by law, liability is limited to fees paid. Nothing excludes consumer guarantees that cannot be excluded under the Australian Consumer Law; where one applies and the law permits, remedy is limited to re-supply or its cost.</p>
+      <h2>7. No certifications</h2><p>Mindspan makes no representation that Spine OS holds SOC 2, ISO 27001, PCI-DSS, HIPAA or any third-party certification.</p>
+      <h2>8. Governing law</h2><p>The laws of Victoria, Australia.</p>
+      <p style="margin-top:1rem;color:var(--dim)">— You have reached the end. You may now accept. —</p>
+    </div>
+    <div class="efade" id="efade"></div>
+  </div>
+  <div class="gate">
+    <button id="accept" disabled>Accept &amp; continue</button>
+    <span class="hint" id="ghint">Scroll the agreement to the end to enable.</span>
+  </div>
+  <div id="done">
+    <b>Consent recorded locally.</b>
+    <div class="hint" id="rec"></div>
+    <p class="muted" style="margin:.55rem 0 0">In the full wizard, this is where a <b>planned, sandboxed, reversible</b> setup begins — you approve each step. Demo only: this writes to your browser's local storage, not the real consent file.</p>
+  </div>
+</main>
+
+<script>
+(function(){
+  var EULA_VERSION="v0.1-DRAFT", TEMPLATE_VERSION="v1";
+  var splash=document.getElementById('splash'), vid=document.getElementById('vid'),
+      mark=document.getElementById('mark'), stage=document.getElementById('stage'),
+      eula=document.getElementById('eula'), accept=document.getElementById('accept'),
+      ghint=document.getElementById('ghint'), efade=document.getElementById('efade'),
+      done=document.getElementById('done'), rec=document.getElementById('rec');
+  var reduced = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var started=false;
+
+  function ceremony(){
+    if(started) return; started=true;
+    splash.classList.add('gone');
+    setTimeout(function(){ splash.style.display='none'; }, 900);
+    mark.classList.add('show');                              // icon fades in, centred + large
+    setTimeout(function(){ mark.classList.add('corner'); }, reduced?0:650);  // resizes into the corner
+    setTimeout(function(){ stage.classList.add('show'); stage.setAttribute('aria-hidden','false'); eula.focus(); }, reduced?120:900);
+  }
+  // splash exit paths: end, error, skip, reduced-motion, safety timeout
+  if(reduced){ ceremony(); }
+  else {
+    vid.addEventListener('ended', ceremony);
+    vid.addEventListener('error', ceremony);
+    var p = vid.play && vid.play(); if(p&&p.catch) p.catch(function(){ ceremony(); });
+    setTimeout(ceremony, 8000); // never trap the user if the video stalls
+  }
+  document.getElementById('skip').addEventListener('click', ceremony);
+
+  // hard gate: enable accept only when EULA scrolled to the end
+  function checkScroll(){
+    if(eula.scrollTop + eula.clientHeight >= eula.scrollHeight - 8){
+      accept.disabled=false; ghint.textContent='Thanks — you can continue.'; efade.style.opacity='0';
+    }
+  }
+  eula.addEventListener('scroll', checkScroll); setTimeout(checkScroll, 300);
+
+  async function sha256(str){
+    var buf=await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  function machineId(){
+    var k='spineos_machine_id', v=localStorage.getItem(k);
+    if(!v){ v=([1e7]+'').replace(/\d/g,c=>(crypto.getRandomValues(new Uint8Array(1))[0]&15).toString(16)); localStorage.setItem(k,v); }
+    return 'LOCAL-'+v;
+  }
+  accept.addEventListener('click', async function(){
+    if(accept.disabled) return;
+    var record={ schema_version:"v1", product:"spine-os", accepted:true,
+      accepted_at_utc:new Date().toISOString(), eula_version:EULA_VERSION,
+      eula_sha256: await sha256(eula.innerText.trim()), template_version:TEMPLATE_VERSION,
+      machine_id: machineId(), app_version:"spineos-wizard-0.1.0", reduced_motion:reduced, locale:"en-AU" };
+    localStorage.setItem('spineos_consent_record', JSON.stringify(record));
+    accept.disabled=true; accept.textContent='Accepted ✓';
+    rec.innerHTML='<code>'+record.accepted_at_utc+'</code> · EULA <code>'+EULA_VERSION+'</code> · hash <code>'+record.eula_sha256.slice(0,16)+'…</code> · machine <code>'+record.machine_id+'</code>';
+    done.style.display='block'; done.scrollIntoView({behavior:reduced?'auto':'smooth'});
+  });
+})();
+</script>
+</body></html>

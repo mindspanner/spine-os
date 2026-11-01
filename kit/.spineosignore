@@ -1,0 +1,10 @@
+# SPINE-OS privacy list — paths an AI assistant must NOT send to an online AI service.
+# One pattern per line. Your AI's house rules (CLAUDE.md §2) tell it to honour this file.
+# You can still ask for one item to be used, once, by saying so for that item.
+vault/30-CLIENTS/**
+vault/30-CLIENTS/_CODE-KEY.md
+**/*client*
+**/*.phi.*
+_config/*.local
+_config/llm.local*
+vault/20-GOVERNANCE/access-log.md

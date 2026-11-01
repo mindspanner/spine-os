@@ -1,0 +1,193 @@
+{
+  "$schema": "spine-os/advanced-manifest/v2",
+  "kit_version_file": "kit/VERSION",
+  "protocol": "INSTALL-WITH-YOUR-AI.md",
+  "engine": "kit/wizard/provision.mjs",
+  "verify": "kit/wizard/kit-install-test.mjs",
+  "personas": [
+    "general",
+    "psychology",
+    "health",
+    "social-work",
+    "legal",
+    "accounting",
+    "coaching",
+    "sme"
+  ],
+  "elements": [
+    {
+      "id": "core",
+      "required": true,
+      "title": "Vault core",
+      "what": "Folder skeleton (00-INBOX, 10-PROJECTS, 20-GOVERNANCE, 30-CLIENTS, systems) + CLAUDE.md charter + MEMORY.md + security baseline, naming and keeping-current SOPs + .spineosignore privacy list + Archive folder (vault/90-ARCHIVE) + removing-files SOP + delete guard (.claude/settings.json → .claude/hooks/delete-guard)",
+      "files": [
+        "kit/vault/",
+        "kit/CLAUDE.md",
+        "kit/MEMORY.md",
+        "kit/VERSION",
+        "kit/.spineosignore",
+        "kit/vault/90-ARCHIVE/",
+        "kit/vault/20-GOVERNANCE/SOP-removing-files.md",
+        "kit/.claude/settings.json",
+        "kit/.claude/hooks/",
+        "kit/.codex/config.toml"
+      ]
+    },
+    {
+      "id": "governance",
+      "required": false,
+      "default": true,
+      "title": "Governance pack",
+      "what": "Governance starter, wiki-root rules, legal templates, persona retention templates",
+      "files": [
+        "kit/GOVERNANCE-STARTER.md",
+        "kit/WIKI-ROOT-GOVERNANCE.md",
+        "kit/legal/"
+      ]
+    },
+    {
+      "id": "dashboard",
+      "required": false,
+      "default": true,
+      "title": "Status dashboard",
+      "what": "Local single-file dashboard + status board data + refresh script",
+      "files": [
+        "kit/dashboard.html",
+        "kit/status-board.js",
+        "kit/status-board.json",
+        "kit/refresh-status-board.mjs"
+      ]
+    },
+    {
+      "id": "intake",
+      "required": false,
+      "default": false,
+      "title": "Guided intake surface",
+      "what": "intake.html — structured intake/config page (feeds the vault, all local)",
+      "files": [
+        "kit/intake.html"
+      ]
+    },
+    {
+      "id": "agents",
+      "required": false,
+      "default": true,
+      "title": "Multi-AI charter",
+      "what": "AGENTS.md — rules for several AI tools sharing one vault without collisions",
+      "files": [
+        "kit/AGENTS.md"
+      ]
+    },
+    {
+      "id": "ai-onboarding",
+      "required": false,
+      "default": true,
+      "title": "AI onboarding prompts",
+      "what": "START-WITH-YOUR-AI.md — copy-paste prompt pack to boot any assistant governed",
+      "files": [
+        "kit/START-WITH-YOUR-AI.md",
+        "kit/SETUP-GUIDE.md"
+      ]
+    },
+    {
+      "id": "wizard-engine",
+      "required": false,
+      "default": false,
+      "title": "Keep installer engine",
+      "what": "kit/wizard/ retained inside the vault for re-runs and repair",
+      "files": [
+        "kit/wizard/"
+      ]
+    }
+  ],
+  "privacy": {
+    "ships_personal_data": false,
+    "network_calls": "none, except optional explicit de-identified install signal (see engine)",
+    "rule": "personal/client/health data never goes into kit files; the vault holds it under its own governance post-install"
+  },
+  "persona_note": "Engine keys in kit/wizard/provision.mjs RETENTION. \"general\" = not sure / other.",
+  "installers": {
+    "mac": "kit/install.command (double-click) → kit/install.sh",
+    "windows": "kit/Install-on-Windows.cmd (double-click) → kit/install.ps1",
+    "linux": "kit/install.sh",
+    "any_with_node": "kit/wizard/provision.mjs --config <brief.json>",
+    "guided_app": "kit/wizard/serve.mjs"
+  },
+  "modules": [
+    {
+      "id": "documents",
+      "default": true,
+      "ask": "Do you want a tidy place for documents, letters and forms?",
+      "what": "vault/40-DOCUMENTS/ with templates, forms, reference and admin folders",
+      "files": [
+        "kit/modules/documents/files/"
+      ]
+    },
+    {
+      "id": "casework",
+      "default": false,
+      "ask": "Do you keep client or case files (for example clinical or social work)?",
+      "what": "Case folder template (summary, notes, plans, contacts, documents), private client-code key, case-files SOP",
+      "files": [
+        "kit/modules/casework/files/"
+      ]
+    },
+    {
+      "id": "reminders",
+      "default": true,
+      "ask": "Would you like a reminders list your AI can check and turn into calendar alerts?",
+      "what": "vault/REMINDERS.md + reminders routine (makes .ics calendar files you double-click; nothing is sent)",
+      "files": [
+        "kit/modules/reminders/files/"
+      ]
+    },
+    {
+      "id": "email",
+      "default": false,
+      "ask": "Would you like email help (your AI drafts, you always press Send)?",
+      "what": "Email-help routine + 4 plain email templates; draft-only, no account connection",
+      "files": [
+        "kit/modules/email/files/"
+      ]
+    },
+    {
+      "id": "skills",
+      "default": true,
+      "ask": "Add ready-made AI shortcuts (sort my inbox, find a file, what's due)?",
+      "what": ".claude/skills/: sort-inbox, find-it, case-note, whats-due, draft-email, weekly-review, privacy-check, keep-current",
+      "files": [
+        "kit/modules/skills/files/"
+      ]
+    }
+  ],
+  "module_rules": "Each installer asks every module question in plain English (non-interactive: SPINEOS_MODULES=a,b or none; provision.mjs: form.modules[]). Files land at the same relative path in the vault with the kit's no-clobber rules. Re-run the installer on the same folder to add one later.",
+  "removals": {
+    "ask": "When you or your AI remove a file, where should it go?",
+    "options": [
+      {
+        "id": "archive",
+        "default": true,
+        "label": "An Archive folder inside your vault (suggested)"
+      },
+      {
+        "id": "trash",
+        "label": "Your computer's Trash / Recycle Bin"
+      },
+      {
+        "id": "ask",
+        "label": "Ask me each time"
+      }
+    ],
+    "never_offered": "permanent delete",
+    "stored_in": "_config/removals.local (mode=archive|trash|ask)",
+    "non_interactive": "SPINEOS_REMOVALS=archive|trash|ask; provision.mjs: form.removals",
+    "protocol": "A permanent delete needs three steps in order: list exactly what and why · move the items to the Archive or Trash first · the person types \"permanently delete\" and names every item. Never via wildcards, bulk or parsed lists; holds even with full access or bypass permissions.",
+    "guard": "kit/.claude/hooks/delete-guard.mjs (Claude Code PreToolUse on Bash|PowerShell and Write|Edit|MultiEdit|NotebookEdit) — a safety net plus rules, not a guarantee; test kit/wizard/delete-guard-test.mjs",
+    "rules": [
+      "kit/CLAUDE.md §9",
+      "kit/AGENTS.md",
+      "kit/vault/20-GOVERNANCE/SOP-removing-files.md"
+    ],
+    "guard_codex": "kit/.codex/config.toml (approval_policy=untrusted, sandbox_mode=workspace-write) + AGENTS.md rules; no hook"
+  }
+}

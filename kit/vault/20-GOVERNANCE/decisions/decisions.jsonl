@@ -1,0 +1,3 @@
+{"id":"d-0001","date":"2026-03-01","decision":"Local-first vault is the business source of truth; cloud tools hold copies only","adr":"ADR-0001","by":"you"}
+{"id":"d-0002","date":"2026-03-01","decision":"AI assistant permitted under human-in-the-loop rules with my own key and least-data access","adr":"ADR-0002","by":"you"}
+{"id":"d-0003","date":"2026-03-08","decision":"Default to fixed-price quoting with deposit + stated payment terms; retainers for ongoing clients","adr":"ADR-0003","by":"you"}

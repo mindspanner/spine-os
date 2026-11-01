@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spine OS — Installer</title>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#06110f;--wash:#0c2a25;--panel:#0d1c19;--panel2:#112521;--line:#24443d;
+  --ink:#f1f7f5;--muted:#a6bbb6;--brand:#2dd4bf;--brand2:#67e8f9;--danger:#fb7185;
+  --shadow:0 24px 80px rgba(0,0,0,.32)
+}
+html[data-theme=light]{
+  color-scheme:light;
+  --bg:#effaf7;--wash:#d8f3ec;--panel:#ffffff;--panel2:#f3faf8;--line:#b9d8d0;
+  --ink:#10201c;--muted:#526d66;--shadow:0 22px 70px rgba(18,70,58,.14)
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(900px 560px at 50% -15%,var(--wash),var(--bg) 65%);
+  color:var(--ink);font:15px/1.55 "Segoe UI",Inter,system-ui,-apple-system,sans-serif}
+body.splashing{overflow:hidden}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.splash{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:#000;opacity:1;transition:opacity .55s ease}
+.splash.gone{opacity:0;pointer-events:none}
+.splash img,.splash video{width:100%;height:100%;object-fit:contain;background:#000}
+.splashControls{position:absolute;right:22px;bottom:20px;display:flex;gap:9px;align-items:center}
+.splashBtn{border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:8px 14px;background:rgba(3,12,10,.68);backdrop-filter:blur(10px);color:#fff;font-size:12px;font-weight:800}
+.splashBtn:hover,.splashBtn:focus-visible{background:rgba(20,184,166,.82);outline:2px solid #fff;outline-offset:2px}
+.splashPlay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:15px;padding:12px 22px}
+@media(prefers-reduced-motion:reduce){.splash{transition:none}}
+.shell{min-height:100vh;display:grid;grid-template-rows:auto 1fr auto}
+header{height:68px;padding:0 26px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--panel) 84%,transparent)}
+.mark{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#05211b;font-weight:900}
+.title{font-weight:850;letter-spacing:-.01em}.mode{font-size:12px;color:var(--muted);margin-right:auto}
+.theme{border:1px solid var(--line);background:var(--panel2);color:var(--ink);border-radius:999px;padding:7px 11px}
+main{width:min(1040px,100%);margin:0 auto;padding:30px 24px 48px;display:grid;grid-template-columns:220px 1fr;gap:26px}
+nav{position:sticky;top:24px;align-self:start;display:grid;gap:8px}
+.navstep{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:11px;color:var(--muted);font-size:13px}
+.navstep b{width:24px;height:24px;border-radius:999px;border:1px solid var(--line);display:grid;place-items:center;font-size:11px}
+.navstep.on{color:var(--ink);background:var(--panel2)}.navstep.on b{background:var(--brand);color:#05211b;border-color:transparent}
+.navstep.done b{background:#22c55e;color:#04220f;border-color:transparent}
+.screen{display:none}.screen.on{display:block}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:var(--shadow)}
+.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:850;color:var(--brand)}
+h1{font-size:32px;line-height:1.15;letter-spacing:-.035em;margin:8px 0 10px}h2{font-size:20px;margin:0 0 8px}
+p{margin:0 0 14px}.muted{color:var(--muted)}.small{font-size:13px}.hidden{display:none!important}
+.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:24px}
+.btn{border:0;border-radius:12px;padding:11px 18px;font-weight:800;background:linear-gradient(180deg,var(--brand2),var(--brand));color:#06211c}
+.btn.secondary{background:var(--panel2);color:var(--ink);border:1px solid var(--line)}
+.btn.danger{background:color-mix(in srgb,var(--danger) 20%,var(--panel));color:var(--danger);border:1px solid color-mix(in srgb,var(--danger) 55%,transparent)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.hero{display:grid;grid-template-columns:1.3fr .7fr;gap:24px;align-items:center}
+.heroart{min-height:250px;border-radius:18px;border:1px solid var(--line);background:
+  linear-gradient(145deg,color-mix(in srgb,var(--brand) 26%,transparent),transparent 55%),
+  repeating-linear-gradient(90deg,transparent 0 28px,color-mix(in srgb,var(--line) 45%,transparent) 29px 30px);
+  display:grid;place-items:center}
+.heroart .stack{width:150px;height:170px;position:relative}.heroart i{position:absolute;width:120px;height:82px;border-radius:14px;border:1px solid var(--line);background:var(--panel2);left:15px;box-shadow:0 12px 24px rgba(0,0,0,.18)}
+.heroart i:nth-child(1){top:10px;transform:rotate(-7deg)}.heroart i:nth-child(2){top:42px;transform:rotate(5deg)}.heroart i:nth-child(3){top:76px;display:grid;place-items:center;font-style:normal;font-weight:900;color:var(--brand)}
+.promise{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}.promise div{border:1px solid var(--line);background:var(--panel2);border-radius:12px;padding:12px;font-size:13px}
+.eula{height:330px;overflow:auto;white-space:pre-wrap;border:1px solid var(--line);background:var(--panel2);border-radius:14px;padding:18px;color:var(--muted);font-size:13px}
+.field{margin:16px 0}.field label{display:block;font-size:12px;font-weight:800;color:var(--muted);margin-bottom:6px}
+input[type=text],select{width:100%;border:1px solid var(--line);border-radius:11px;background:var(--panel2);color:var(--ink);padding:11px 12px}
+.choicegrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+.choice{border:1px solid var(--line);border-radius:14px;background:var(--panel2);padding:14px;text-align:left;color:var(--ink)}
+.choice strong{display:block}.choice span{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+.choice.selected{border-color:var(--brand);box-shadow:0 0 0 2px color-mix(in srgb,var(--brand) 22%,transparent)}
+.folder{display:flex;align-items:center;gap:14px;border:1px solid var(--line);background:var(--panel2);padding:17px;border-radius:14px}.foldericon{font-size:28px}
+.path{font-family:ui-monospace,Consolas,monospace;font-size:12px;word-break:break-all;color:var(--muted)}
+details{margin-top:14px}summary{cursor:pointer;color:var(--muted);font-size:13px}
+.profilegrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.profilegrid .field{margin:0}
+.preview{display:grid;grid-template-columns:90px 1fr;gap:16px;align-items:center;border:1px solid var(--line);border-radius:16px;padding:18px;background:var(--panel2)}
+.brandmark{width:78px;height:78px;border-radius:18px;display:grid;place-items:center;background:var(--brand);color:#05211b;font-size:28px;font-weight:900;overflow:hidden}.brandmark img{width:100%;height:100%;object-fit:cover}
+.colourrow{display:flex;gap:10px}.swatch{width:36px;height:36px;border-radius:999px;border:3px solid transparent}.swatch.selected{border-color:var(--ink)}
+.aiList{display:grid;gap:10px}.ai{border:1px solid var(--line);background:var(--panel2);padding:15px;border-radius:14px;display:flex;gap:12px;align-items:center}.ai.selected{border-color:var(--brand)}
+.ai .state{margin-left:auto;font-size:11px;font-weight:800;padding:4px 8px;border-radius:999px;background:color-mix(in srgb,var(--brand) 14%,transparent);color:var(--brand)}
+.ai .state.missing{color:var(--muted);background:transparent;border:1px solid var(--line)}
+.plan{max-height:330px;overflow:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel2);padding:14px}
+.planrow{display:flex;gap:12px;padding:7px 4px;border-bottom:1px solid color-mix(in srgb,var(--line) 60%,transparent);font-size:12px}.planrow:last-child{border-bottom:0}
+.planrow code{color:var(--brand);min-width:90px}.status{margin-top:14px;border-radius:12px;padding:13px;background:var(--panel2);color:var(--muted);font-size:13px}
+.checks{list-style:none;padding:0;margin:14px 0;display:grid;gap:8px}.checks li{display:flex;gap:9px}.pass{color:#22c55e}.fail{color:var(--danger)}
+.moves{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.move{padding:16px;border-radius:15px;background:var(--panel2);border:1px solid var(--line)}.move b{display:block;margin-bottom:5px}
+.telemetry{display:flex;gap:9px;align-items:flex-start;margin-top:16px;color:var(--muted);font-size:12px}
+footer{padding:12px 24px;border-top:1px solid var(--line);color:var(--muted);font-size:11px;text-align:center}
+@media(max-width:780px){main{grid-template-columns:1fr}nav{position:static;grid-template-columns:repeat(4,1fr)}.navstep span{display:none}.hero,.profilegrid{grid-template-columns:1fr}.heroart{display:none}.choicegrid,.moves,.promise{grid-template-columns:1fr}}
+</style>
+</head>
+<body class="splashing">
+<div class="splash" id="splash" role="dialog" aria-modal="true" aria-label="Spine OS introduction">
+  <img id="splashMotion" src="/splash-poster.jpg" alt="">
+  <video class="hidden" id="splashVideo" playsinline preload="metadata" poster="/splash-poster.jpg">
+    <source src="/splash.mp4" type="video/mp4">
+  </video>
+  <div class="splashControls">
+    <button class="splashBtn" id="splashSound" type="button" aria-pressed="false">Sound on</button>
+    <button class="splashBtn" id="splashSkip" type="button">Skip intro →</button>
+  </div>
+</div>
+<div class="shell">
+<header>
+  <div class="mark">S</div><div><div class="title">Spine OS</div><div class="mode" id="modeLabel">Self install</div></div>
+  <button class="theme" id="themeBtn" type="button" aria-label="Toggle light and dark theme">◐ Theme</button>
+</header>
+<main>
+  <nav id="nav"></nav>
+  <div>
+    <section class="screen on" data-step="welcome">
+      <div class="card hero">
+        <div>
+          <div class="eyebrow">Welcome</div>
+          <h1>Your operating system for useful work.</h1>
+          <p class="muted">One guided installation. No terminal, no loose setup files, and no guessing what comes next.</p>
+          <div class="promise"><div><b>Local-first</b><br><span class="muted">Your folder stays yours.</span></div><div><b>Plan first</b><br><span class="muted">See every write.</span></div><div><b>Verified</b><br><span class="muted">Nine checks before done.</span></div></div>
+          <label class="telemetry"><input type="checkbox" id="telemetryOpt"> Share de-identified installation timing so Mindspan can improve this journey. Sends version, OS, architecture, step, duration and failure code only—never your name, brand, folder or files.</label>
+          <div class="actions"><button class="btn" data-next>Begin setup</button></div>
+        </div>
+        <div class="heroart" aria-hidden="true"><div class="stack"><i></i><i></i><i>SPINE</i></div></div>
+      </div>
+    </section>
+
+    <section class="screen" data-step="licence">
+      <div class="card">
+        <div class="eyebrow">Licence</div><h1>Read before anything is written.</h1>
+        <p class="muted">Scroll to the end. Declining closes the installer without touching your chosen folder.</p>
+        <div class="eula" id="eula" tabindex="0">Loading licence…</div>
+        <div class="actions"><button class="btn secondary" id="declineBtn">Decline</button><button class="btn" id="acceptBtn" disabled>Accept and continue</button><span class="muted small" id="eulaHint">Scroll to the end ↓</span></div>
+      </div>
+    </section>
+
+    <section class="screen" data-step="location">
+      <div class="card">
+        <div class="eyebrow">Location</div><h1>Choose where Spine OS lives.</h1>
+        <p class="muted">The installer writes only inside one dedicated folder. System roots, shortcuts, unsafe paths and insufficient disks are refused.</p>
+        <div class="folder"><div class="foldericon">📁</div><div><b id="folderName">No folder chosen</b><div class="path hidden" id="folderPath"></div></div></div>
+        <div class="actions"><button class="btn" id="pickFolder">Choose folder</button><button class="btn secondary" data-back>Back</button><button class="btn hidden" id="locationNext">Use this location</button></div>
+        <details><summary>Advanced: enter a path</summary><div class="field"><label for="manualPath">Absolute install folder</label><input id="manualPath" type="text" autocomplete="off" spellcheck="false"></div><button class="btn secondary" id="useManual">Use entered path</button></details>
+        <div class="status hidden" id="folderStatus"></div>
+      </div>
+    </section>
+
+    <section class="screen" data-step="profile">
+      <div class="card">
+        <div class="eyebrow">Profile</div><h1>Shape the workspace around your work.</h1>
+        <p class="muted">These meaningful choices absorb the old intake wizard. Sensible defaults remain editable later.</p>
+        <div class="profilegrid">
+          <div class="field"><label for="depth">Setup depth</label><select id="depth"><option value="minimal">Minimal — smart defaults</option><option value="moderate" selected>Moderate — recommended</option><option value="high">Highly customised</option></select></div>
+          <div class="field"><label for="persona">Closest profile</label><select id="persona"><option value="general">General / not sure</option><option value="psychology">Psychologist / clinician</option><option value="health">GP / allied health</option><option value="social-work">Social worker / case manager</option><option value="legal">Solicitor / legal</option><option value="accounting">Accountant</option><option value="coaching">Coach / consultant</option><option value="sme">Micro-SME</option></select></div>
+          <div class="field"><label for="organising">Organising style</label><select id="organising"><option value="actionability">Actionability — projects and areas</option><option value="numbered">Numbered — stable references</option><option value="minimal">Minimal — capture and review</option><option value="networked">Networked — notes and maps</option></select></div>
+          <div class="field"><label for="governance">Governance</label><select id="governance"><option value="none">None — folders only</option><option value="light">Light — ADR and SOP templates</option><option value="strict">Strict — retention and access log</option></select></div>
+        </div>
+        <fieldset class="field" id="modules" style="border:0;padding:0;margin:16px 0 0">
+          <legend style="font-weight:600;margin-bottom:6px">Optional extras — tick any you want (you can add them later)</legend>
+          <label style="display:block;margin:4px 0"><input type="checkbox" value="documents"> A tidy place for documents, letters and forms</label>
+          <label style="display:block;margin:4px 0"><input type="checkbox" value="casework"> Client or case files (clinical or social work), with note templates</label>
+          <label style="display:block;margin:4px 0"><input type="checkbox" value="reminders"> A reminders list your AI can check and turn into calendar alerts</label>
+          <label style="display:block;margin:4px 0"><input type="checkbox" value="email"> Email help — your AI drafts, you always press Send</label>
+          <label style="display:block;margin:4px 0"><input type="checkbox" value="skills" checked> Ready-made AI shortcuts (sort my inbox, find a file, what's due)</label>
+        </fieldset>
+        <div class="field" style="margin-top:16px"><label for="removals">When you or your AI remove a file, where should it go?</label><select id="removals"><option value="archive" selected>An Archive folder inside your vault (suggested)</option><option value="trash">Your computer's Trash / Recycle Bin</option><option value="ask">Ask me each time</option></select>
+          <p class="muted" style="margin:6px 0 0">Nothing is ever deleted for good without three steps: your AI lists it, moves it to the Archive or Trash first, then you type "permanently delete" and its name.</p></div>
+        <details><summary>Advanced: project types and connectors</summary>
+          <div class="field"><label for="projectTypes">Project types</label><input id="projectTypes" type="text" value="clients, admin, research"></div>
+          <div class="field"><label for="connectors">Connector placeholders</label><input id="connectors" type="text" value=""></div>
+        </details>
+        <div class="actions"><button class="btn secondary" data-back>Back</button><button class="btn" data-next>Continue</button></div>
+      </div>
+    </section>
+
+    <section class="screen" data-step="brand">
+      <div class="card">
+        <div class="eyebrow">Brand</div><h1>Make it feel like your system.</h1>
+        <p class="muted">Preview the name and colour now. Your logo is copied into the chosen folder only.</p>
+        <div class="preview"><div class="brandmark" id="brandMark">S</div><div><h2 id="brandPreview">Your Business</h2><span class="muted">Command Centre · local-first</span></div></div>
+        <div class="field"><label for="brandName">Business or practice name</label><input id="brandName" type="text" placeholder="Your Business"></div>
+        <div class="field"><label>Primary colour</label><div class="colourrow" id="colours"></div></div>
+        <div class="field"><label for="logoFile">Logo (optional)</label><input id="logoFile" type="file" accept="image/png,image/jpeg,image/webp"></div>
+        <div class="actions"><button class="btn secondary" data-back>Back</button><button class="btn" data-next>Continue</button></div>
+      </div>
+    </section>
+
+    <section class="screen" data-step="connect">
+      <div class="card">
+        <div class="eyebrow">Connect your AI</div><h1>Turn the folder into a working system.</h1>
+        <p class="muted">We detect what is installed, wire only inside your Spine OS folder, and verify the selected client. No global configuration is silently changed.</p>
+        <div class="aiList" id="aiList"><div class="status">Detecting installed AI clients…</div></div>
+        <div class="status hidden" id="aiFallback">No compatible client was detected. The installer will create a copy-ready, permission-first prompt and setup link so you can connect later without blocking installation.</div>
+        <div class="actions"><button class="btn secondary" data-back>Back</button><button class="btn" id="aiNext" disabled>Use selected AI</button></div>
+      </div>
+    </section>
+
+    <section class="screen" data-step="apply">
+      <div class="card">
+        <div class="eyebrow">Plan → apply → verify</div><h1>Review every write before installation.</h1>
+        <p class="muted">Existing files are never overwritten. Changed product files land beside yours as <code>*.new-v1.9.0</code>. Interrupted writes use temporary files and are either completed or left with a diagnostic receipt.</p>
+        <div class="plan" id="plan">Building plan…</div>
+        <label class="telemetry"><input type="checkbox" id="realConfirm"> I reviewed this plan and authorise installation inside the chosen folder.</label>
+        <div class="actions"><button class="btn secondary" data-back>Back</button><button class="btn" id="applyBtn" disabled>Install and verify</button></div>
+        <div class="status hidden" id="applyStatus"></div>
+        <ul class="checks hidden" id="verifyChecks"></ul>
+      </div>
+    </section>
+
+    <section class="screen" data-step="done">
+      <div class="card">
+        <div class="eyebrow">Done</div><h1 id="doneTitle">Your Spine OS is working.</h1>
+        <p class="muted" id="doneSummary">Installation, AI wiring and the nine-point verification passed.</p>
+        <div class="moves"><div class="move"><b>1 · Capture</b><span class="muted">Put the loose thing into your Inbox.</span></div><div class="move"><b>2 · Decide</b><span class="muted">Record one durable decision.</span></div><div class="move"><b>3 · Run</b><span class="muted">Ask your connected AI for the morning briefing.</span></div></div>
+        <div class="status" id="handoverStatus"></div>
+        <div class="actions"><button class="btn" id="openDashboard">Open my dashboard</button><button class="btn secondary" id="openFolder">Open installed folder</button></div>
+      </div>
+    </section>
+  </div>
+</main>
+<footer>Spine OS installer <span id="version">1.9.0</span> · one engine on macOS and Windows · local receipts · no hidden writes</footer>
+</div>
+<script>
+(function(){
+'use strict';
+var TOKEN='__SPINEOS_TOKEN__', ALLOW_REAL=('__ALLOW_REAL__'==='true');
+var steps=['welcome','licence','location','profile','brand','connect','apply','done'];
+var labels=['Welcome','Licence','Location','Profile','Brand','Connect your AI','Apply + verify','Done'];
+var current=0, consent=null, eulaSha='', chosenRoot='', selectedAI=null, configuredAI=null, logoData='', installResult=null;
+var timing=[], journeyStarted=Date.now(), enteredAt=journeyStarted, telemetryOpt=false, installStartedSent=false, mode='self';
+var remoteEvents=['install_started','step_reached','ai_connected','install_completed','install_failed'];
+var $=function(q){return document.querySelector(q)}, $$=function(q){return Array.from(document.querySelectorAll(q))};
+var splash=$('#splash'),splashMotion=$('#splashMotion'),splashVideo=$('#splashVideo'),splashFinished=false,splashTimer=null,splashStartedAt=Date.now();
+function armSplashTimeout(wait){
+  clearTimeout(splashTimer);
+  var fullDuration=Number.isFinite(splashVideo.duration)?Math.ceil(splashVideo.duration*1000)+3000:15000;
+  splashTimer=setTimeout(finishSplash,wait||fullDuration)
+}
+function finishSplash(){
+  if(splashFinished)return;splashFinished=true;
+  clearTimeout(splashTimer);splashVideo.pause();splash.classList.add('gone');document.body.classList.remove('splashing');
+  setTimeout(function(){splash.classList.add('hidden');var begin=$('[data-step="welcome"] [data-next]');if(begin)begin.focus()},600)
+}
+function startSplash(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){finishSplash();return}
+  splashStartedAt=Date.now();splashMotion.addEventListener('error',finishSplash,{once:true});
+  splashVideo.addEventListener('ended',finishSplash,{once:true});armSplashTimeout(10500)
+}
+$('#splashSkip').onclick=finishSplash;
+$('#splashSound').onclick=function(){
+  var button=this;
+  if(splashVideo.classList.contains('hidden')){
+    var resumeAt=Math.max(0,(Date.now()-splashStartedAt)/1000);splashMotion.classList.add('hidden');splashVideo.classList.remove('hidden');splashVideo.muted=false;
+    var resumeWithSound=function(){splashVideo.currentTime=Math.min(resumeAt,Math.max(0,(splashVideo.duration||10)-.1));var play=splashVideo.play();if(play&&play.then)play.catch(function(){splashVideo.classList.add('hidden');splashMotion.classList.remove('hidden')})};
+    if(splashVideo.readyState>=1)resumeWithSound();else splashVideo.addEventListener('loadedmetadata',resumeWithSound,{once:true})
+  }else{splashVideo.muted=!splashVideo.muted}
+  button.textContent=splashVideo.muted?'Sound on':'Sound off';button.setAttribute('aria-pressed',String(!splashVideo.muted))
+};
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!splashFinished)finishSplash()});
+function api(path,options){options=options||{};options.headers=Object.assign({'content-type':'application/json','x-spineos-token':TOKEN},options.headers||{});
+  return fetch(path,options).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||r.status);return j})})}
+function esc(v){return String(v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function record(event,step,code,duration){var t={event:event,step:step||steps[current],duration_ms:duration==null?0:duration,failure_code:code||''};timing.push(t);return t}
+function sendTiming(event,step,code,duration){var t=record(event,step,code,duration);if(!telemetryOpt||remoteEvents.indexOf(event)<0)return;api('/api/telemetry',{method:'POST',body:JSON.stringify({optIn:true,event:event,step:t.step,duration_ms:t.duration_ms,failure_code:t.failure_code,sandbox:false})}).catch(function(){})}
+function sendInstallStarted(){if(!telemetryOpt||installStartedSent)return;installStartedSent=true;sendTiming('install_started',steps[current],'',Date.now()-journeyStarted)}
+function renderNav(){var n=$('#nav');n.innerHTML='';labels.forEach(function(label,i){var d=document.createElement('div');d.className='navstep'+(i===current?' on':i<current?' done':'');d.innerHTML='<b>'+(i<current?'✓':i+1)+'</b><span>'+esc(label)+'</span>';n.appendChild(d)})}
+function show(index){var now=Date.now();sendTiming('step_completed',steps[current],'',now-enteredAt);current=Math.max(0,Math.min(index,steps.length-1));$$('.screen').forEach(function(s,i){s.classList.toggle('on',i===current)});renderNav();enteredAt=Date.now();sendTiming('step_reached',steps[current],'',0);if(steps[current]==='apply')loadPlan()}
+function form(){return{
+  brand:($('#brandName').value||'Your Business').trim(),brandColor:$('.swatch.selected')?.dataset.colour||'#2dd4bf',logoData:logoData,
+  depth:$('#depth').value,persona:$('#persona').value,organising:$('#organising').value,governance:$('#governance').value,
+  projectTypes:$('#projectTypes').value.split(',').map(function(x){return x.trim()}).filter(Boolean),
+  connectors:$('#connectors').value.split(',').map(function(x){return x.trim()}).filter(Boolean),
+  modules:$$('#modules input:checked').map(function(x){return x.value}),removals:$('#removals').value,
+  llm:selectedAI?selectedAI.id:'other'
+}}
+function aiChoice(){return configuredAI||{tier:'prompt',provider:selectedAI?selectedAI.id:'other',client:selectedAI?selectedAI.id:'other'}}
+startSplash();
+renderNav();
+$('#themeBtn').onclick=function(){document.documentElement.dataset.theme=document.documentElement.dataset.theme==='light'?'dark':'light'};
+$$('[data-next]').forEach(function(b){b.onclick=function(){show(current+1)}});$$('[data-back]').forEach(function(b){b.onclick=function(){show(current-1)}});
+$('#telemetryOpt').onchange=function(){telemetryOpt=this.checked;if(telemetryOpt)sendInstallStarted()};
+api('/api/session').then(function(s){mode=s.mode||'self';$('#modeLabel').textContent=mode==='admin'?'Installed for you · admin mode':'Self install';$('#version').textContent=s.installerVersion;
+  if(s.config){var c=s.config.form||{};$('#brandName').value=c.brand||'';$('#persona').value=c.persona||'general';$('#governance').value=c.governance||'light';$('#organising').value=c.organising||'actionability';$('#removals').value=c.removals||'archive';chosenRoot=s.config.root||'';$('#telemetryOpt').checked=s.config.telemetryOptIn===true;telemetryOpt=$('#telemetryOpt').checked;if(telemetryOpt)sendInstallStarted();configuredAI=s.config.connect||null;selectedAI=configuredAI&&{id:configuredAI.client||configuredAI.provider||'other',name:configuredAI.client||configuredAI.provider||'Configured AI',detected:false};updateFolder();updateBrand();
+    if(s.config.unattended){var wait=setInterval(function(){if(!eulaSha)return;clearInterval(wait);if(!s.config.licenceAccepted||s.config.eulaSha256!==eulaSha){$('#folderStatus').textContent='Admin install stopped: the config does not contain acceptance of this exact final licence.';$('#folderStatus').classList.remove('hidden');show(2);return}consent={accepted:true,accepted_at:new Date().toISOString(),eula_sha256:eulaSha};show(6);$('#realConfirm').checked=true;$('#applyBtn').disabled=false;$('#applyBtn').click()},50)}
+  }}).catch(function(){});
+api('/api/eula').then(function(e){$('#eula').textContent=e.text;eulaSha=e.sha256}).catch(function(e){$('#eula').textContent='Licence could not be loaded: '+e.message});
+function atEnd(el){return el.clientHeight > 0 && el.scrollTop+el.clientHeight>=el.scrollHeight-8}
+$('#eula').onscroll=function(){if(atEnd(this)){$('#acceptBtn').disabled=false;$('#eulaHint').textContent='Read to the end — acceptance enabled.'}};
+$('#declineBtn').onclick=function(){document.body.innerHTML='<main style="display:grid;place-items:center;min-height:100vh;padding:30px;text-align:center"><div><h1>Licence declined</h1><p>Nothing was installed or written.</p></div></main>'};
+$('#acceptBtn').onclick=function(){consent={accepted:true,accepted_at:new Date().toISOString(),eula_sha256:eulaSha};show(2)};
+function updateFolder(){if(!chosenRoot)return;var parts=chosenRoot.replace(/[\\\\/]+$/,'').split(/[\\\\/]/);$('#folderName').textContent=parts.pop()||'Spine OS';$('#folderPath').textContent=chosenRoot;$('#folderPath').classList.remove('hidden');$('#locationNext').classList.remove('hidden');$('#manualPath').value=chosenRoot}
+$('#pickFolder').onclick=function(){$('#folderStatus').classList.add('hidden');api('/api/pick-folder',{method:'POST',body:'{}'}).then(function(r){if(r.selected){chosenRoot=r.path.replace(/[\\\\/]+$/,'')+(navigator.platform.indexOf('Win')>=0?'\\\\SpineOS':'/SpineOS');updateFolder()}else{$('#folderStatus').textContent='No folder selected. Choose again or use Advanced.';$('#folderStatus').classList.remove('hidden')}}).catch(function(e){$('#folderStatus').textContent=e.message;$('#folderStatus').classList.remove('hidden')})};
+$('#useManual').onclick=function(){chosenRoot=$('#manualPath').value.trim();updateFolder()};$('#locationNext').onclick=function(){api('/api/validate-root',{method:'POST',body:JSON.stringify({root:chosenRoot})}).then(function(r){chosenRoot=r.root;updateFolder();if(r.warnings&&r.warnings.length){$('#folderStatus').textContent=r.warnings.join(' ');$('#folderStatus').classList.remove('hidden')}show(3)}).catch(function(e){$('#folderStatus').textContent=e.message;$('#folderStatus').classList.remove('hidden')})};
+var gov={psychology:'strict',health:'strict','social-work':'strict',legal:'strict',accounting:'strict',coaching:'light',sme:'light',general:'light'};
+$('#persona').onchange=function(){$('#governance').value=gov[this.value]||'light'};
+var colours=['#2dd4bf','#22d3ee','#6366f1','#84cc16','#f59e0b','#ec4899'];$('#colours').innerHTML=colours.map(function(c,i){return'<button type="button" class="swatch '+(i===0?'selected':'')+'" data-colour="'+c+'" style="background:'+c+'" aria-label="'+c+'"></button>'}).join('');
+$$('.swatch').forEach(function(b){b.onclick=function(){$$('.swatch').forEach(function(x){x.classList.remove('selected')});b.classList.add('selected');updateBrand()}});
+function updateBrand(){var name=($('#brandName').value||'Your Business').trim();$('#brandPreview').textContent=name;$('#brandMark').style.background=$('.swatch.selected')?.dataset.colour||'#2dd4bf';if(!logoData)$('#brandMark').textContent=(name[0]||'S').toUpperCase()}
+$('#brandName').oninput=updateBrand;$('#logoFile').onchange=function(){var f=this.files&&this.files[0];if(!f)return;if(f.size>2*1024*1024){alert('Choose a logo smaller than 2 MB.');this.value='';return}var r=new FileReader();r.onload=function(){logoData=String(r.result||'');$('#brandMark').innerHTML='<img alt="" src="'+logoData+'">'};r.readAsDataURL(f)};
+function renderAI(clients){var list=$('#aiList'),found=clients.filter(function(c){return c.detected});list.innerHTML='';(found.length?found:[{id:'other',name:'Connect later with a copy-ready prompt',detected:false,evidence:'No compatible client detected'}]).forEach(function(c){var b=document.createElement('button');b.type='button';b.className='ai';b.innerHTML='<div><b>'+esc(c.name)+'</b><div class="muted small">'+esc(c.evidence)+'</div></div><span class="state '+(c.detected?'':'missing')+'">'+(c.detected?'Detected':'Fallback')+'</span>';b.onclick=function(){$$('.ai').forEach(function(x){x.classList.remove('selected')});b.classList.add('selected');configuredAI=null;selectedAI=c;$('#aiNext').disabled=false};list.appendChild(b)});$('#aiFallback').classList.toggle('hidden',found.length>0)}
+api('/api/ai/probe').then(function(r){renderAI(r.clients||[])}).catch(function(){renderAI([])});$('#aiNext').onclick=function(){show(6)};
+function loadPlan(){$('#plan').textContent='Building plan…';api('/api/plan',{method:'POST',body:JSON.stringify({form:form()})}).then(function(d){var structural=d.plan.filter(function(s){return s.type!=='kitfile'});$('#plan').innerHTML=structural.map(function(s){return'<div class="planrow"><code>'+esc(s.type)+'</code><span>'+esc(s.rel)+'</span></div>'}).join('')+'<div class="planrow"><code>product</code><span>'+d.kitFiles+' versioned Spine OS files · no-clobber update rules</span></div><div class="planrow"><code>verify</code><span>AI connection + nine checks + signed handover + diagnostic receipt on failure</span></div>'}).catch(function(e){$('#plan').textContent='Plan failed: '+e.message})}
+$('#realConfirm').onchange=function(){$('#applyBtn').disabled=!this.checked};
+$('#applyBtn').onclick=function(){if(!consent||!chosenRoot)return;this.disabled=true;$('#applyStatus').classList.remove('hidden');$('#applyStatus').textContent='Installing atomically, wiring your AI, and running nine checks…';api('/api/apply',{method:'POST',body:JSON.stringify({form:form(),ai:aiChoice(),consent:consent,target:'real',confirm:'APPLY-REAL',root:chosenRoot})}).then(function(r){installResult=r;var list=$('#verifyChecks');list.innerHTML='';r.verification.checks.forEach(function(c){var li=document.createElement('li');li.className=c.ok?'pass':'fail';li.textContent=(c.ok?'✓ ':'✗ ')+c.name+(c.detail?' · '+c.detail:'');list.appendChild(li)});list.classList.remove('hidden');if(!r.verification.green)throw new Error('Verification failed — the install remains fail-closed.');$('#applyStatus').textContent='PASS · '+r.verification.checks.filter(function(c){return c.ok}).length+'/9 checks · '+(r.ai.verified?'AI verified':'AI fallback prepared');show(7);if(r.ai.verified)sendTiming('ai_connected','done','',Date.now()-journeyStarted);sendTiming('install_completed','done','',Date.now()-journeyStarted);return api('/api/timing-receipt',{method:'POST',body:JSON.stringify({events:timing})})}).then(function(t){$('#handoverStatus').textContent='Signed handover: '+installResult.handover.file+' · Timings: '+t.file}).catch(function(e){sendTiming('install_failed','apply','INSTALL_FAILED',Date.now()-enteredAt);$('#applyStatus').textContent='Installation stopped safely: '+e.message;$('#applyBtn').disabled=false})};
+$('#openDashboard').onclick=function(){api('/api/open-installed',{method:'POST',body:JSON.stringify({target:'dashboard'})}).catch(function(e){alert(e.message)})};$('#openFolder').onclick=function(){api('/api/open-installed',{method:'POST',body:JSON.stringify({target:'folder'})}).catch(function(e){alert(e.message)})};
+window.addEventListener('beforeunload',function(){if(current<7)record('install_abandoned',steps[current],'WINDOW_CLOSED',Date.now()-enteredAt)});
+})();
+</script>
+</body>
+</html>

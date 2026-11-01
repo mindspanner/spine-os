@@ -1,0 +1,9 @@
+# Your brand — copy to brand.local and edit (brand.local is yours; never share the template with it).
+# The guided installer fills this in for you. To re-brand later, edit the values then ask your
+# assistant to "refresh my dashboard" (or re-run the installer into a fresh folder).
+name=Your Business
+tagline=Your business on your hard drive.
+industry=
+primary_colour=#14b8a6
+secondary_colour=#22d3ee
+logo_path=

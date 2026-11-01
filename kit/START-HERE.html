@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Spine OS — Start here (install)</title>
+<style>
+  :root { color-scheme: dark; --teal:#2dd4bf; --teal2:#22d3ee; --ink:#e6edf8; --mut:#93a6c4;
+    --line:rgba(255,255,255,.10); --panel:rgba(15,23,42,.6); --amber:#f59e0b; --ok:#34d399; }
+  * { box-sizing: border-box; }
+  body { margin:0; min-height:100vh; font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:radial-gradient(1200px 600px at 50% -10%,#0d2b2b 0%,#07131f 55%,#050a12 100%);
+    color:var(--ink); line-height:1.6; padding:36px 18px 72px; }
+  .wrap { max-width:780px; margin:0 auto; }
+  .edge { height:3px; border-radius:3px; background:linear-gradient(90deg,#6366f1,#06b6d4 33%,#84cc16 66%,#f59e0b); margin-bottom:20px; }
+  .badge { display:inline-block; font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+    color:#5eead4; border:1px solid #1d4f47; background:#0c2420; padding:4px 10px; border-radius:999px; }
+  h1 { font-size:28px; margin:14px 0 4px; }
+  h2 { font-size:19px; margin:0 0 10px; color:#bff1e7; }
+  h3 { font-size:15px; margin:16px 0 6px; color:#9fe6da; }
+  p, li { color:#c3d2e8; }
+  .muted { color:var(--mut); }
+  .sm { font-size:13.5px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px 22px; margin:16px 0;
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
+  .steps { list-style:none; margin:0; padding:0; display:grid; gap:12px; }
+  .steps li { display:flex; gap:13px; align-items:flex-start; }
+  .n { flex:none; width:26px; height:26px; border-radius:999px; display:grid; place-items:center; font-weight:800; font-size:13px;
+    color:#04201c; background:linear-gradient(135deg,var(--teal),var(--teal2)); }
+  .big b { font-size:16px; }
+  code, kbd { background:#0a121f; border:1px solid #1f3147; border-radius:6px; padding:1px 6px; font-size:13px; font-family:ui-monospace,Menlo,Consolas,monospace; }
+  kbd { color:#bff1e7; }
+  .callout { border-left:3px solid var(--amber); background:rgba(245,158,11,.06); border-radius:0 10px 10px 0; padding:12px 16px; margin:12px 0; }
+  .callout.ok { border-left-color:var(--ok); background:rgba(52,211,153,.06); }
+  details { border:1px solid var(--line); border-radius:12px; padding:0 16px; margin:12px 0; background:rgba(12,22,38,.5); }
+  details[open] { padding-bottom:14px; }
+  summary { cursor:pointer; padding:13px 0; font-weight:700; color:#cfe; list-style:none; }
+  summary::-webkit-details-marker { display:none; }
+  summary::before { content:"▸ "; color:var(--teal); }
+  details[open] summary::before { content:"▾ "; }
+  .quote { background:#0a121f; border:1px solid #33455f; border-radius:10px; padding:11px 14px; color:#cdd8ea; font-size:13.5px; margin:8px 0; }
+  .cmd { position:relative; background:#0a121f; border:1px solid #1f3147; border-radius:10px; padding:14px 90px 14px 14px; margin:10px 0;
+    font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12.5px; line-height:1.55; overflow-x:auto; white-space:pre-wrap; word-break:break-word; }
+  .copy { position:absolute; top:9px; right:9px; background:var(--teal); color:#04201c; border:0; border-radius:8px; padding:6px 12px; font-weight:800; font-size:12px; cursor:pointer; font-family:inherit; }
+  .copy.done { background:var(--ok); }
+  a.btn { display:inline-block; margin-top:8px; background:linear-gradient(90deg,var(--teal),var(--teal2)); color:#04201c;
+    font-weight:800; text-decoration:none; padding:11px 18px; border-radius:10px; }
+  .modebar { display:flex; gap:8px; margin:14px 0 4px; flex-wrap:wrap; }
+  .mode { background:#0c1626; border:1px solid #1f3147; color:var(--mut); border-radius:999px; padding:6px 14px; font:inherit; font-size:13px; cursor:pointer; }
+  .mode[aria-pressed="true"] { border-color:var(--teal); color:#bff1e7; background:#0c2420; }
+  .lvl { display:none; }
+  body.detail .lvl.detail, body.tech .lvl.detail, body.tech .lvl.tech { display:block; }
+  body.detail .flow.lvl.detail, body.tech .flow.lvl.detail { display:grid; }
+  .flow { grid-template-columns:1fr 1fr 1fr; gap:10px; margin-top:10px; }
+  @media(max-width:620px){ .flow{grid-template-columns:1fr;} }
+  .flow div { background:rgba(255,255,255,.03); border:1px solid var(--line); border-radius:10px; padding:11px 13px; font-size:13px; }
+  .flow b { color:#9fe6da; display:block; font-size:11px; letter-spacing:.05em; text-transform:uppercase; margin-bottom:3px; }
+  footer { margin-top:30px; font-size:12px; color:#6f86a8; }
+</style>
+</head>
+<body class="simple">
+  <div class="wrap">
+    <div class="edge"></div>
+    <span class="badge">Spine OS · Install</span>
+    <h1>Let's get you set up.</h1>
+    <p class="muted sm">Everything runs offline and stays on your machine — no account, no cloud. This page has no network calls.
+      Pick how much detail you want; the steps stay the same.</p>
+
+    <div class="modebar" role="group" aria-label="Detail level">
+      <button class="mode" data-mode="simple" aria-pressed="true">Simple</button>
+      <button class="mode" data-mode="detail" aria-pressed="false">More detail</button>
+      <button class="mode" data-mode="tech" aria-pressed="false">Technical</button>
+    </div>
+
+    <!-- ── PRIMARY PATH ─────────────────────────────────────────────── -->
+    <div class="card">
+      <h2>macOS — guided install</h2>
+      <ol class="steps big">
+        <li><span class="n">1</span><div><b>Open the <kbd>Spine-OS</kbd> disk image you downloaded</b>, then drag <kbd>Spine-OS</kbd> to Applications.</div></li>
+        <li><span class="n">2</span><div><b>Open <kbd>Spine-OS</kbd></b><div class="muted sm">The guided wizard opens.</div></div></li>
+        <li><span class="n">3</span><div><b>Follow the wizard</b> — accept the licence, pick a folder, name it, add your brand, choose governance, and connect your AI.<div class="muted sm lvl detail">Optional fields have safe defaults and can be changed later.</div></div></li>
+        <li><span class="n">4</span><div><b>Review the plan, install, and run the self-test.</b> Your dashboard opens when every check is green.</div></li>
+      </ol>
+      <div class="flow lvl detail" aria-hidden="true">
+        <div><b>What just happened</b>You downloaded a folder of plain files — nothing has run yet.</div>
+        <div><b>What happens now</b>The wizard copies those files into one folder you choose and brands your dashboard. Offline.</div>
+        <div><b>What's next</b>You open your dashboard, connect your own AI at your pace, and start working.</div>
+      </div>
+      <p class="muted sm lvl tech" style="margin-bottom:0">Under the hood the app is a thin front-end over <code>install.sh</code>, which resolves one canonical folder, refuses system/home roots, guards path-escape, and self-checks that nothing landed outside your chosen folder.</p>
+    </div>
+
+    <!-- ── ANTICIPATED BLOCKER: GATEKEEPER ──────────────────────────── -->
+    <div class="callout">
+      <b>💡 First time only: macOS may say the app “can’t be opened.” That’s normal — here’s the 20-second fix.</b>
+      <p class="sm" style="margin:6px 0 0">Because this is a fresh download (not yet signed by a big vendor), macOS is being cautious — it is <b>not</b> telling you anything is wrong. You’ll see a message like:</p>
+      <div class="quote">“<b>Spine-OS</b> can’t be opened because Apple cannot check it for malicious software.” &nbsp;— or — &nbsp;“…because it is from an unidentified developer.”</div>
+      <h3 style="margin-top:6px">Do this (macOS 15 / Sequoia):</h3>
+      <ol class="sm" style="margin:0; padding-left:20px">
+        <li>Click <b>Done</b> / <b>OK</b> on that message.</li>
+        <li>Open  → <b>System Settings</b> → <b>Privacy &amp; Security</b>.</li>
+        <li>Scroll down to <i>“‘Spine-OS’ was blocked…”</i> and click <b>Open Anyway</b>.</li>
+        <li>If asked, enter <b>your Mac login password</b> and click <b>OK</b> → then <b>Open</b>.</li>
+      </ol>
+      <div class="callout ok" style="margin:12px 0 0">
+        <b>About that password:</b> it’s your <b>Mac’s own login password</b>, typed into the grey <b>macOS</b> box — macOS just confirming it’s really you.
+        Never type it into a website, an email, or into us. Spine OS never sees it and never asks for it.
+      </div>
+      <details class="lvl detail" style="margin-top:12px">
+        <summary>On macOS 13–14 (Ventura / Sonoma) it’s even quicker</summary>
+        <p class="sm">Right-click (or hold <kbd>Control</kbd> and click) <kbd>Spine-OS</kbd> → choose <b>Open</b> → in the dialog click <b>Open</b> again. You only do this once.</p>
+      </details>
+    </div>
+
+    <!-- ── FALLBACKS ────────────────────────────────────────────────── -->
+    <details>
+      <summary>Still stuck? Two more ways in (both work)</summary>
+      <h3>Option B — the plain script</h3>
+      <p class="sm">Double-click <kbd>install.command</kbd> instead. A Terminal window opens and walks you through the same steps.
+        <span class="lvl detail">If macOS blocks it too, use the same <b>Privacy &amp; Security → Open Anyway</b> step above.</span></p>
+
+      <h3>Option C — one line in Terminal (always works)</h3>
+      <p class="sm">Open <b>Terminal</b> (press <kbd>⌘</kbd>+<kbd>Space</kbd>, type <i>Terminal</i>, press <kbd>Return</kbd>). Paste the line below, press <kbd>Return</kbd>:</p>
+      <div class="cmd" id="cmd1"><button class="copy" data-target="cmd1">Copy</button>xattr -dr com.apple.quarantine "/Applications/Spine-OS.app" &amp;&amp; open "/Applications/Spine-OS.app"</div>
+      <p class="sm muted lvl detail" style="margin-top:2px">Plain English: it clears the download quarantine flag only from the Spine-OS app and opens it.</p>
+      <details class="lvl tech">
+        <summary>Prefer to skip the app and install straight away?</summary>
+        <div class="cmd" id="cmd2"><button class="copy" data-target="cmd2">Copy</button>K="$(ls -dt ~/Downloads/Spine-OS* ~/Desktop/Spine-OS* ~/Spine-OS* 2>/dev/null | head -1)"; bash "$K/install.sh"</div>
+        <p class="sm muted" style="margin-top:2px">Runs the installer directly; it asks where to put your vault and installs a clean default brand (change it later in <code>status-board.json</code>).</p>
+      </details>
+      <p class="sm muted lvl detail">Why does the one-liner clear a “quarantine” flag? macOS tags every download with it. Signing the app removes the prompt for everyone — that’s on our roadmap; until then this is the safe, local, one-time equivalent.</p>
+    </details>
+
+    <!-- ── WINDOWS ──────────────────────────────────────────────────── -->
+    <div class="card">
+      <h2>Windows — under development</h2>
+      <p class="sm">The Windows launcher is not publicly downloadable yet. It will open the same guided wizard after its real-Windows install, update, AI-connect, force-quit, and network tests are complete.</p>
+    </div>
+
+    <!-- ── WHAT'S IN THE BOX ────────────────────────────────────────── -->
+    <details class="lvl detail">
+      <summary>What’s in the box</summary>
+      <ul class="sm">
+        <li><b>Spine-OS.app</b> — the guided macOS setup launcher.</li>
+        <li><b>dashboard.html</b> — your branded command centre; opens offline, no build step.</li>
+        <li><b>status-board.json</b> — the data your dashboard shows (edit it any time).</li>
+        <li><b>intake.html</b> — tailor your folders + governance (offline, ~1 min).</li>
+        <li><b>vault/</b> — the Spine OS vault (Inbox · Projects · Governance · Clients) + starter ADRs &amp; SOPs.</li>
+        <li><b>SETUP-GUIDE.md</b> — connect your own AI (Claude or GPT), at your pace.</li>
+        <li><b>_config/brand.local</b> — your brand (name · colour · logo), yours to edit.</li>
+      </ul>
+    </details>
+
+    <div style="margin-top:18px"><a class="btn" href="dashboard.html">Preview the dashboard →</a></div>
+
+    <footer>
+      Spine OS Kit · plain markdown, readable in any editor. Everything is local. This starter is scaffolding —
+      adapt it to your own professional and regulatory obligations before relying on it.
+    </footer>
+  </div>
+
+  <script>
+    // Detail-level toggle (simple / detail / technical).
+    var modes = document.querySelectorAll('.mode');
+    modes.forEach(function (b) {
+      b.addEventListener('click', function () {
+        document.body.className = b.dataset.mode;
+        modes.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      });
+    });
+    // Copy buttons (clipboard API with a file:// -safe fallback).
+    document.querySelectorAll('.copy').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var el = document.getElementById(btn.dataset.target);
+        var text = el.textContent.replace(/^Copy/, '').trim();
+        function done() { btn.textContent = 'Copied ✓'; btn.classList.add('done'); setTimeout(function(){ btn.textContent='Copy'; btn.classList.remove('done'); }, 1600); }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done, function () { fallback(text, done); });
+        } else { fallback(text, done); }
+      });
+    });
+    function fallback(text, cb) {
+      var ta = document.createElement('textarea'); ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); cb(); } catch (e) {} finally { document.body.removeChild(ta); }
+    }
+  </script>
+</body>
+</html>

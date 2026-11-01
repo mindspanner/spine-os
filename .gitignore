@@ -1,0 +1,14 @@
+# Test reports the kit's own checks write (never product)
+kit/zenflow/
+# Local machine junk
+.DS_Store
+._*
+Thumbs.db
+# Never commit keys or a filled-in local config
+*.local
+!kit/_config/brand.example
+.env
+.env.*
+# Release videos are shipped with the packaged app, not tracked here (size)
+kit/wizard/splash.mp4
+kit/wizard/splash-autoplay.mp4

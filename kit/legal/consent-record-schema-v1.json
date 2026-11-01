@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "mindspan:spineos:consent-record:v1",
+  "title": "Spine OS — Wizard EULA Consent Record (v1)",
+  "description": "Local-only record written by the wizard splash/consent ceremony (§3.8a) before any business logic runs. Nothing is transmitted; this file lives on the operator/client machine for audit. Produced after a hard ACCEPT gate over the scrolled EULA.",
+  "type": "object",
+  "required": ["schema_version", "accepted", "accepted_at_utc", "eula_version", "eula_sha256", "template_version", "machine_id", "product"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "v1" },
+    "product": { "const": "spine-os" },
+    "accepted": { "type": "boolean", "description": "MUST be true to proceed; false/absent => wizard halts at the gate." },
+    "accepted_at_utc": { "type": "string", "format": "date-time", "description": "ISO 8601 UTC timestamp of the ACCEPT action." },
+    "eula_version": { "type": "string", "examples": ["v0.1-DRAFT"] },
+    "eula_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$", "description": "Hash of the exact EULA text shown, so the accepted wording is reproducible." },
+    "template_version": { "type": "string", "examples": ["v1"], "description": "Version of ecosystem-disclosures-template used to assemble the EULA." },
+    "machine_id": { "type": "string", "description": "Stable local machine identifier (OS machine GUID or hashed hardware id). Local only." },
+    "app_version": { "type": "string", "examples": ["spineos-wizard-0.1.0"] },
+    "reduced_motion": { "type": "boolean", "description": "Whether prefers-reduced-motion was honoured (video skipped)." },
+    "locale": { "type": "string", "examples": ["en-AU"] }
+  },
+  "_governance": {
+    "gate": "DRAFT — not legal advice. EULA text requires Australian-lawyer sign-off before any live/transacting use.",
+    "storage": "Write inside the selected Spine OS root only (for example ~/SpineOS/consent-record.json). Never POST the consent record to a server.",
+    "immutability": "Append-only: a re-accept on a new EULA version writes a new record; never overwrite a prior one."
+  },
+  "_example": {
+    "schema_version": "v1",
+    "product": "spine-os",
+    "accepted": true,
+    "accepted_at_utc": "2026-06-05T01:30:00Z",
+    "eula_version": "v0.1-DRAFT",
+    "eula_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "template_version": "v1",
+    "machine_id": "LOCAL-MACHINE-GUID-REDACTED",
+    "app_version": "spineos-wizard-0.1.0",
+    "reduced_motion": false,
+    "locale": "en-AU"
+  }
+}
